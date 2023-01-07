@@ -110,12 +110,11 @@
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav d-flex justify-contend-center">
                         <li ><a href="index.html">Home</a></li>
-                        <li><a href="shop.html">Shop page</a></li>
-
+                        <li><a th:href="@{/products}">Product</a></li>
                         <li><a href="cart.html">Cart</a></li>
                         <li><a href="checkout.html">Checkout</a></li>
                         <li><a th:href="@{/newProduct}"> Add New Product</a></li>
-                        <li><a th:href="@{/newCategory}"> Add New Category</a></li>
+
                         <li><a href="#">Category</a></li>
                         <li><a href="#">Others</a></li>
                         <li><a href="#">Contact</a></li>
@@ -209,14 +208,14 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="latest-product">
-                        <h2 class="section-title">All Products</h2>
+                        <h2 class="section-title">best sales</h2>
                         <div class="product-carousel">
                             <div class="single-product" th:each="product : ${allProduct}">
                                 <div class="product-f-image">
                                     <img th:src="${product.getProductImageLink()}" alt="">
                                     <div class="product-hover">
-                                        <a href="#" class="add-to-cart-link"><i class="fa fa-shopping-cart"></i> Add to cart</a>
-                                        <a th:href="@{/detail}" class="view-details-link"><i class="fa fa-link"></i> See details</a>
+                                        <a th:href="@{/cart/{productId}(productId=${product.getProductId()})}"class="add-to-cart-link"><i class="fa fa-shopping-cart"></i> Add to cart</a>
+                                        <a th:href="@{/detail/{productId}(productId=${product.getProductId()})}" class="view-details-link"><i class="fa fa-link"></i> See details</a>
                                     </div>
                                 </div>
                                 

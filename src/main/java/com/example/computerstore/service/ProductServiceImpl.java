@@ -6,6 +6,8 @@ import com.example.computerstore.model.Products;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -29,13 +31,14 @@ public class ProductServiceImpl implements ProductService{
 
     @Override
     public void save(ProductPayload productPayload, HttpServletRequest request) throws IOException {
-        Products products = new Products(
-                productPayload.getProductName(),
-                productPayload.getProductPrice(),
-                productPayload.getProductDescription(),
-                productPayload.getQuantity(),
-                productPayload.getCategory()
-        );
+       Products  products = new Products();
+       products.setProductId(productPayload.getProductId());
+       products.setProductName(productPayload.getProductName());
+       products.setProductPrice(productPayload.getProductPrice());
+       products.setQuantity(productPayload.getQuantity());
+       products.setProductDescription(productPayload.getProductDescription());
+       products.setCategory(productPayload.getCategory());
+       products.setBrand(productPayload.getBrand());
 
         FileOutputStream stream = null;
         if (StringUtils.hasText(productPayload.getFile().getOriginalFilename())) {
@@ -61,8 +64,25 @@ public class ProductServiceImpl implements ProductService{
         repository.save(products);
     }
 
+
+
     @Override
     public List<Products> getAll() {
         return  repository.findAll();
+    }
+
+    @Override
+    public List<Products> getProductByCategoryId(int categoryId) {
+        return repository.findByCategory_CategoryId(categoryId);
+    }
+
+    @Override
+    public List<Products> getProductbyBrand(String brand) {
+        return repository.findProductsByBrand(brand);
+    }
+
+    @Override
+    public Products searchProduct(int productId) {
+        return repository.getByProductId(productId);
     }
 }

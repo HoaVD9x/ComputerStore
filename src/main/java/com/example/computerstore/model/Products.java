@@ -1,5 +1,6 @@
 package com.example.computerstore.model;
 
+import com.example.computerstore.Payload.ProductPayload;
 import jakarta.persistence.*;
 
 @Entity
@@ -14,7 +15,7 @@ public class Products {
     private String productName;
 
     @Column(name = "productPrice")
-    private String productPrice;
+    private int productPrice;
 
     @Column(name = "productDescription")
     private String productDescription;
@@ -25,39 +26,49 @@ public class Products {
     @Column(name = "quantity")
     private int quantity;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @Column(name = "brand")
+    private String brand;
+
+    @ManyToOne
     @JoinColumn(name = "categoryId")
     private Category category;
 
-    public String getProductPrice() {
-        return productPrice;
-    }
-
-    public void setProductPrice(String productPrice) {
-        this.productPrice = productPrice;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
-
-    public Products(String productName, String productPrice, String productDescription, int quantity, Category category) {
-        this.productName = productName;
-        this.productPrice = productPrice;
-        this.productDescription = productDescription;
-        this.quantity = quantity;
-        this.category = category;
-    }
+   //    @Column(name = "active")
+//    private boolean active = true;
 
 
+//   @ManyToOne
+//   @JoinColumn(name = "category_category_id")
 
     public Products() {
 
     }
+
+    public Products(int productId, String productName, int productPrice, String productDescription, String productImageLink, int quantity, Category category,String brand) {
+        this.productId = productId;
+        this.productName = productName;
+        this.productPrice = productPrice;
+        this.productDescription = productDescription;
+        this.productImageLink = productImageLink;
+        this.quantity = quantity;
+        this.category = category;
+        this.brand = brand;
+    }
+
+    //    public boolean isActive() {
+//        return active;
+//    }
+//
+//    public void setActive(boolean active) {
+//        this.active = active;
+//    }
+
+
+
+
+
+
+
 
     public int getProductId() {
         return productId;
@@ -91,11 +102,35 @@ public class Products {
         this.productImageLink = productImageLink;
     }
 
+    public int getProductPrice() {
+        return productPrice;
+    }
+
+    public void setProductPrice(int productPrice) {
+        this.productPrice = productPrice;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
     public Category getCategory() {
         return category;
     }
 
     public void setCategory(Category category) {
         this.category = category;
+    }
+
+    public String getBrand() {
+        return brand;
+    }
+
+    public void setBrand(String brand) {
+        this.brand = brand;
     }
 }

@@ -1,17 +1,16 @@
 package com.example.computerstore.Payload;
 
 import com.example.computerstore.model.Category;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
 import org.springframework.web.multipart.MultipartFile;
 
 public class ProductPayload {
 
+    private int productId;
+
+
     private String productName;
 
-    private String productPrice;
+    private int productPrice;
 
     private int quantity;
     private String productDescription;
@@ -19,6 +18,8 @@ public class ProductPayload {
     private Category category;
 
     private MultipartFile file;
+
+    private String brand;
 
     public MultipartFile getFile() {
         return file;
@@ -28,18 +29,14 @@ public class ProductPayload {
         this.file = file;
     }
 
-    public ProductPayload() {
+
+    public int getProductId() {
+        return productId;
     }
 
-    public ProductPayload(int productId, String productName, String productPrice, String productDescription, int quantity, Category category, MultipartFile file) {
-        this.productName = productName;
-        this.productPrice = productPrice;
-        this.productDescription = productDescription;
-        this.quantity = quantity;
-        this.category = category;
-        this.file = file;
+    public void setProductId(int productId) {
+        this.productId = productId;
     }
-
 
     public String getProductName() {
         return productName;
@@ -49,20 +46,12 @@ public class ProductPayload {
         this.productName = productName;
     }
 
-    public String getProductPrice() {
+    public int getProductPrice() {
         return productPrice;
     }
 
-    public void setProductPrice(String productPrice) {
+    public void setProductPrice(int productPrice) {
         this.productPrice = productPrice;
-    }
-
-    public String getProductDescription() {
-        return productDescription;
-    }
-
-    public void setProductDescription(String productDescription) {
-        this.productDescription = productDescription;
     }
 
     public int getQuantity() {
@@ -73,11 +62,27 @@ public class ProductPayload {
         this.quantity = quantity;
     }
 
+    public String getProductDescription() {
+        return productDescription;
+    }
+
+    public void setProductDescription(String productDescription) {
+        this.productDescription = productDescription;
+    }
+
     public Category getCategory() {
         return category;
     }
 
     public void setCategory(Category category) {
         this.category = category;
+    }
+
+    public String getBrand() {
+        return brand;
+    }
+
+    public void setBrand(String brand) {
+        this.brand = brand;
     }
 }

@@ -2,34 +2,37 @@ package com.example.computerstore.model;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "category")
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "categoryId",nullable = false, unique = true)
+    @Column(name = "categoryId", nullable = false, unique = true)
     private int categoryId;
 
     @Column(name = "categoryName")
     private String categoryName;
 
-    @OneToOne(mappedBy = "category")
-    private Products products;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "category")
+    private List<Products> products;
 
     public Category() {
     }
 
-    public Category(int categoryId, String categoryName, Products products) {
+    public Category(int categoryId, String categoryName, List<Products> products) {
         this.categoryId = categoryId;
         this.categoryName = categoryName;
         this.products = products;
     }
 
-    public Products getProducts() {
+    public List<Products> getProducts() {
         return products;
     }
 
-    public void setProducts(Products products) {
+    public void setProducts(List<Products> products) {
         this.products = products;
     }
 
