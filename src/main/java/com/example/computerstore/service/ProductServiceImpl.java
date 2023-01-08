@@ -6,8 +6,6 @@ import com.example.computerstore.model.Products;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -22,12 +20,10 @@ import java.util.List;
 
 @Service
 public class ProductServiceImpl implements ProductService{
-
-    @Autowired
-    private ProductRepository repository;
-
     @Value("${static.file.location}")
     private String staticResource;
+    @Autowired
+    private ProductRepository productsRepository;
 
     @Override
     public void save(ProductPayload productPayload, HttpServletRequest request) throws IOException {
@@ -61,28 +57,28 @@ public class ProductServiceImpl implements ProductService{
 
         }
 
-        repository.save(products);
-    }
-
-
-
-    @Override
-    public List<Products> getAll() {
-        return  repository.findAll();
+        productsRepository.save(products);
     }
 
     @Override
     public List<Products> getProductByCategoryId(int categoryId) {
-        return repository.findByCategory_CategoryId(categoryId);
+        return productsRepository.findByCategory_CategoryId(categoryId);
     }
 
     @Override
     public List<Products> getProductbyBrand(String brand) {
-        return repository.findProductsByBrand(brand);
+        return productsRepository.findProductsByBrand(brand);
     }
 
     @Override
-    public Products searchProduct(int productId) {
-        return repository.getByProductId(productId);
+    public List<Products> findAll() {
+        return productsRepository.findAll();
     }
+
+    @Override
+    public Products getProductById(int productId) {
+        return productsRepository.getById(productId);
+    }
+
+
 }

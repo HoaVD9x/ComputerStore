@@ -1,6 +1,7 @@
 package com.example.computerstore.dao;
 
 import com.example.computerstore.model.Products;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -10,6 +11,9 @@ public interface ProductRepository extends JpaRepository<Products, Integer> {
     List<Products> findByCategory_CategoryId(int categoryId);
 
     List<Products> findProductsByBrand(String Brand);
-    Products getByProductId(Integer productId);
+
+
+
+
 
 }

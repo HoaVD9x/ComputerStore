@@ -9,7 +9,6 @@ import java.util.Optional;
 
 @Service
 public interface CategoryRepository extends JpaRepository<Category,Integer> {
-     Optional<Category> findByCategoryName(String categoryName);
 
      @Override
      List<Category> findAll();
