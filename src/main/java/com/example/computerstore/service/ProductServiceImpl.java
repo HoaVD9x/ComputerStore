@@ -80,5 +80,15 @@ public class ProductServiceImpl implements ProductService{
         return productsRepository.getById(productId);
     }
 
+    @Override
+    public List<Products> getProductByMinMaxPrice(int min, int max) {
+        return productsRepository.findProductsByProductPriceIsBetween(min, max);
+    }
+
+    @Override
+    public List<Products> getProductPriceMin(int min) {
+        return productsRepository.findProductsByProductPriceAfter(min);
+    }
+
 
 }

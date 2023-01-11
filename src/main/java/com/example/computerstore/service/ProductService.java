@@ -25,6 +25,12 @@ public interface ProductService {
 
     Products getProductById(int productId);
 
+    List<Products>getProductByMinMaxPrice(int min, int max);
+
+    List<Products>getProductPriceMin(int min);
+
+
+
 
 
 

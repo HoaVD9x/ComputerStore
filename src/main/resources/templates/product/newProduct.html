@@ -44,29 +44,75 @@ URL: https://www.freshdesignweb.com/ustora/ -->
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script> <![endif]-->
 </head>
 <body>
+<div class="header-area">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="user-menu">
+                    <ul class="d-flex flex-row ">
+                        <li><a href="#"><i class="fa fa-user"></i> My Account</a></li>
+                        <li><a href="#"><i class="fa fa-heart"></i> Wishlist</a></li>
+                        <li><a href="cart.html"><i class="fa fa-user"></i> My Cart</a></li>
+                        <li><a href="checkout.html"><i class="fa fa-user"></i> Checkout</a></li>
+                        <li><a href="#"><i class="fa fa-user"></i> Login</a></li>
+                    </ul>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div> <!-- End header area -->
 
 <div class="site-branding-area">
     <div class="container">
         <div class="row">
             <div class="col-sm-6">
                 <div class="logo">
-                    <h1>
-                        <a href="./"><img src="../../img/logo.png"></a>
-                    </h1>
+                    <h1><a href="./"><img src="../../img/logo.png"></a></h1>
                 </div>
             </div>
 
+            <div class="col-sm-6">
+                <div class="shopping-item">
+                    <a href="cart.html">Cart - <span class="cart-amunt">$100</span> <i class="fa fa-shopping-cart"></i>
+                        <span class="product-count">5</span></a>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 <!-- End site branding area -->
-
+<div class="mainmenu-area">
+    <div class="container">
+        <div class="row">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <div class="navbar-collapse collapse nav-header">
+                <ul class="nav navbar-nav navbar-menu ">
+                    <li><a th:href="@{/}">Home</a></li>
+                    <li><a th:href="@{/products}">Product</a></li>
+                    <li><a th:href="@{/cart}">Cart</a></li>
+                    <li><a th:href="@{/checkout}">Checkout</a></li>
+                    <li><a th:href="@{/newProduct}"> Add New Product</a></li>
+                    <li><a th:href="@{/contact}">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="product-big-title-area">
     <div class="container">
         <div class="row">
             <div class="col-md-12">
                 <div class="product-bit-title text-center">
-                    <h2>Shop</h2>
+                    <h2 th:if="${message!= null}" th:text="${message}"> All Product</h2>
                 </div>
             </div>
         </div>
@@ -76,45 +122,47 @@ URL: https://www.freshdesignweb.com/ustora/ -->
 <div class="single-product-area">
     <div class="zigzag-bottom"></div>
     <div class="container">
-        <div th:text="${message}"></div>
+
         <div class="row">
 
             <div class="col-md-12">
-                <form th:action="@{/saveProduct}" method="post" enctype="multipart/form-data" >
-                    <div class="col-sm-4">
+                <form th:action="@{/saveProduct}" method="post" enctype="multipart/form-data" th:object="${product}">
+                    <div class="col-sm-6 form-css">
                         <div class="product-inner">
                             <div class="form-outline flex-fill mb-0">
                                 <label class="form-label">Product Name</label>
-                                <input type="text" th:field="${product.productName}" class="form-control"/>
+                                <input type="text" th:field="*{productName}" class="form-control"/>
 
                             </div>
                             <div class="form-outline flex-fill mb-0">
                                 <label class="form-label">Price</label>
-                                <input type="text" th:field="${product.productPrice}" class="form-control"/>
+                                <label class="text-danger" th:text="${validationError}"></label>
+                                <input type="text" th:field="*{productPrice}" class="form-control"/>
 
                             </div>
 
                             <div class="form-outline flex-fill mb-0">
                                 <label class="form-label">Quantity</label>
-                                <input type="text" th:field="${product.quantity}" class="form-control"/>
+                                <label class="text-danger" th:text="${validationError}"></label>
+                                <input type="text" th:field="*{quantity}" class="form-control"/>
 
                             </div>
 
                             <div class="form-outline flex-fill mb-0">
                                 <label class="form-label">Brand</label>
-                                <input type="text" th:field="${product.brand}" class="form-control"/>
+                                <input type="text" th:field="*{brand}" class="form-control"/>
 
                             </div>
                             <div class="form-outline flex-fill mb-0">
                                 <label class="form-label">Description</label>
-                                <textarea th:field="${product.productDescription}" class="form-control"
+                                <textarea th:field="*{productDescription}" class="form-control"
                                           id="exampleFormControlTextarea1" rows="4"></textarea>
 
                             </div>
 
                             <div class="form-outline flex-fill mb-0">
                                 <label class="form-label">Category</label>
-                                <select class="form-select" id="sel2" th:field="${product.category}">
+                                <select class="form-select" id="sel2" th:field="*{category}">
                                     <option th:each="category : ${categorys} " th:text="${category.categoryName}"
                                             th:value="${category.categoryId}"></option>
                                 </select>
@@ -123,7 +171,7 @@ URL: https://www.freshdesignweb.com/ustora/ -->
                         </div>
                         <div class="form-outline flex-fill mb-0">
                             <label class="form-label">Product Image</label>
-                            <input class="form-control" type="file" id="formFile" th:field="${product.file}">
+                            <input class="form-control" type="file" id="formFile" th:field="*{file}">
                         </div>
                         <div th:text="${message}"></div>
                         <div class="form-group d-flex justify-content-center">

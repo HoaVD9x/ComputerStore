@@ -52,33 +52,7 @@
                 </div>
             </div>
 
-            <div class="col-md-4">
-                <div class="header-right">
-                    <ul class="list-unstyled list-inline d-flex flex-row">
-                        <li class="dropdown dropdown-small">
-                            <a data-toggle="dropdown" data-hover="dropdown" class="dropdown-toggle" href="#"><span
-                                    class="key">currency :</span><span class="value">USD </span><b
-                                    class="caret"></b></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="#">USD</a></li>
-                                <li><a href="#">INR</a></li>
-                                <li><a href="#">GBP</a></li>
-                            </ul>
-                        </li>
 
-                        <li class="dropdown dropdown-small">
-                            <a data-toggle="dropdown" data-hover="dropdown" class="dropdown-toggle" href="#"><span
-                                    class="key">language :</span><span class="value">English </span><b
-                                    class="caret"></b></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="#">English</a></li>
-                                <li><a href="#">French</a></li>
-                                <li><a href="#">German</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
-            </div>
         </div>
     </div>
 </div> <!-- End header area -->
@@ -113,35 +87,32 @@
                     <span class="icon-bar"></span>
                 </button>
             </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav d-flex flex-row justify-content-between">
-                    <li><a href="index.html">Home</a></li>
-                    <li class="active"><a href="products.html">Shop page</a></li>
-                    <li><a href="newProduct.html">Single product</a></li>
-                    <li><a href="cart.html">Cart</a></li>
-                    <li><a href="checkout.html">Checkout</a></li>
-                    <li><a href="#">Category</a></li>
-                    <li><a href="#">Others</a></li>
-                    <li><a href="#">Contact</a></li>
+            <div class="navbar-collapse collapse nav-header">
+                <ul class="nav navbar-nav navbar-menu ">
+                    <li><a th:href="@{/}">Home</a></li>
+                    <li><a th:href="@{/products}">Product</a></li>
+                    <li><a th:href="@{/cart}">Cart</a></li>
+                    <li><a th:href="@{/checkout}">Checkout</a></li>
+                    <li><a th:href="@{/newProduct}"> Add New Product</a></li>
+                    <li><a th:href="@{/contact}">Contact</a></li>
                 </ul>
             </div>
         </div>
     </div>
-</div> <!-- End mainmenu area -->
+</div> <!-- End- End mainmenu area -->
 
 <div class="product-big-title-area">
     <div class="container">
         <div class="row">
             <div class="col-md-12">
                 <div class="product-bit-title text-center">
-                    <h2>Shop</h2>
+                    <h2 th:if="${message!= null}" th:text="${message}"> All Product</h2>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-<div th:text="${message}"></div>
 
 <div class="single-product-area">
     <div class="zigzag-bottom"></div>
@@ -215,6 +186,30 @@
                                             </h3>
 
                                         </h3>
+                                        <h4>
+                                            <ul class="price-css">
+                                                <li>
+                                                    <a th:href="@{/price(min=0,max=30000)}">
+                                                        0円 ~ 30000円
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a th:href="@{/price(min=30000,max=60000)}">
+                                                        30000円 ~ 60000円
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a th:href="@{/price(min=60000,max=90000)}">
+                                                        60000円 ~ 90000円
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a th:href="@{/MinPrice(min=90000)}">
+                                                        > 90000 円
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </h4>
                                         <div class="collapse show" id="widget-5">
                                             <div class="widget-body">
                                                 <div class="filter-price">
@@ -238,21 +233,32 @@
                 </div>
                 <div class="col-sm-9">
                     <div class="col-md-3 col-sm-9" th:each="product : ${products}">
-                        <div class="single-shop-product">
+                        <div class="single-shop-product" >
                             <div class="product-upper">
                                 <img th:src="${product.getProductImageLink()}" alt="">
                             </div>
                             <h2><a th:href="@{/detail/{productId}(productId=${product.getProductId()})}"
                                    th:text="${product.getProductName()}"></a></h2>
                             <div class="product-carousel-price">
-                                <ins th:text="${product.getProductPrice()}"></ins>
+                                <ins th:text="${product.getProductPrice()} + ' 円'"></ins>
                             </div>
-
-                            <div class="product-option-shop">
-                                <a class="add_to_cart_button" data-quantity="1" data-product_sku="" data-product_id="70"
-                                   rel="nofollow" href="/canvas/shop/?add-to-cart=70">Add to cart</a>
-                            </div>
+                            <form method="get" th:action="@{/order/{productId}(productId=${product.getProductId()})}">
+                                <div class="quantity buttons_added" >
+                                    <p>quantity :</p>
+                                    <div>
+                                        <label class="text-danger" th:text="${validationError}"></label>
+                                    <input type="number" class="input-text qty text"
+                                           value="quantityOrder" id="quantityOrder" name="quantityOrder">
+                                    </div>
+                                </div>
+                                <div class="product-option-shop">
+                                    <button class="add_to_cart_button"
+                                            type="submit">Add to cart
+                                    </button>
+                                </div>
+                            </form>
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -263,16 +269,14 @@
             <div class="col-md-12">
                 <div class="product-pagination text-center">
                     <nav>
-                        <a href="#" aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span>
-                        </a>
-                        <ul class="pagination" th:if="${productPage.totalPages > 0}" th:each="pageNumber : ${pageNumbers}">
-                            <li><a th:href="@{/products(size=${productPage.size}, page=${pageNumber})}" th:text="${pageNumber}"
-                            th:class="${pageNumber== productPage.number + 1} ? active "></a></li>
+
+                        <ul class="pagination" th:if="${productPage.totalPages > 0}"
+                            th:each="pageNumber : ${pageNumbers}">
+                            <li><a th:href="@{/products(size=${productPage.size}, page=${pageNumber})}"
+                                   th:text="${pageNumber}"
+                                   th:class="${pageNumber== productPage.number + 1} ? active "></a></li>
                         </ul>
-                        <a href="#" aria-label="Next">
-                            <span aria-hidden="true">&raquo;</span>
-                        </a>
+
                     </nav>
                 </div>
             </div>
