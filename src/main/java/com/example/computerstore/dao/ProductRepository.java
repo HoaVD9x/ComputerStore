@@ -8,13 +8,21 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface ProductRepository extends JpaRepository<Products, Integer> {
-    List<Products> findByCategory_CategoryId(int categoryId);
+    Page<Products> findByCategory_CategoryIdAndActiveTrue(int categoryId,Pageable pageable);
 
-    List<Products> findProductsByBrand(String Brand);
+    Page<Products> findProductsByBrand(String Brand,Pageable pageable);
 
-    List<Products> findProductsByProductPriceIsBetween(int min, int max);
+    Page<Products> findProductsByProductPriceIsBetweenAndActiveTrue(int min, int max, Pageable pageable);
 
     List<Products> findProductsByProductPriceAfter(int min);
+
+    Products getProductsByProductId(int productId);
+
+    List<Products> findAllByActiveTrue();
+
+    Page<Products> getProductsByActiveTrue(Pageable pageable);
+
+    List<Products> getProductsByBrand(String brand);
 
 
 

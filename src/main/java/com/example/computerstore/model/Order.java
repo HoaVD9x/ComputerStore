@@ -2,18 +2,17 @@ package com.example.computerstore.model;
 
 import com.example.computerstore.Payload.OrderPayLoad;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotEmpty;
-import org.hibernate.annotations.NotFound;
+
 
 @Entity
 @Table(name = "'order")
 public class Order {
 
     @Id
-    @GeneratedValue ( strategy = GenerationType.IDENTITY)
-    @Column(name = "orderId",nullable = false, unique = true)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "orderId", nullable = false, unique = true)
     private int orderId;
-@NotEmpty(message = "enter a number greater than 0")
+
     @Column(name = "quantityOrder")
     private int quantityOrder;
 
@@ -54,7 +53,6 @@ public class Order {
     }
 
 
-
     public Products getProduct() {
         return product;
     }
@@ -71,7 +69,7 @@ public class Order {
         this.cart = cart;
     }
 
-    public void orderToEntity (OrderPayLoad orderPayLoad){
+    public void orderToEntity(OrderPayLoad orderPayLoad) {
         this.orderId = orderPayLoad.getOrderId();
         this.quantityOrder = orderPayLoad.getQuantityOrder();
         this.product = orderPayLoad.getProduct();

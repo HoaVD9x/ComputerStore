@@ -3,16 +3,18 @@ package com.example.computerstore.Payload;
 import com.example.computerstore.model.Category;
 import org.springframework.web.multipart.MultipartFile;
 
+
+
 public class ProductPayload {
 
     private int productId;
+   private String productName;
 
-
-    private String productName;
 
     private int productPrice;
 
     private int quantity;
+
     private String productDescription;
 
     private Category category;

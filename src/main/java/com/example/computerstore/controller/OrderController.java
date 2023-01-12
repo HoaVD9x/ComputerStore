@@ -43,7 +43,7 @@ public class OrderController {
         return "product/products";
     }
 
-    @GetMapping("delete")
+    @GetMapping("deleteOrder")
     public  String deleteOrder(Model model, @RequestParam ("orderId") int  orderId) {
         orderService.deleteOrder(orderId);
         model.addAttribute("message", "product has been successfully deleted");

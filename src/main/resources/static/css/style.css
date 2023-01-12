@@ -1731,3 +1731,8 @@ li {
     display: flex;
     justify-content: space-between;
 }
+
+.newProductForm{
+    display: flex;
+    justify-content: center;
+}

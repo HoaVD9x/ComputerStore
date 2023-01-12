@@ -4,29 +4,27 @@ import com.example.computerstore.Payload.OrderPayLoad;
 import com.example.computerstore.Payload.ProductPayload;
 import com.example.computerstore.dao.CategoryRepository;
 import com.example.computerstore.dao.ProductRepository;
+import com.example.computerstore.model.Order;
 import com.example.computerstore.model.Products;
+import com.example.computerstore.service.CartService;
+import com.example.computerstore.service.OrderService;
 import com.example.computerstore.service.ProductService;
 import jakarta.servlet.http.HttpServletRequest;
 
+
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-
 import java.io.IOException;
-
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.PrimitiveIterator;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -42,14 +40,26 @@ public class ProductController {
     @Autowired
     private ProductRepository productRepository;
 
+    @Autowired
+    private OrderService  orderService;
+
+
     @GetMapping("newProduct")
-    public ModelAndView newProduct(ModelMap modelMap) {
+    public String newProduct(Model model) {
 
-        modelMap.addAttribute("product", new ProductPayload());
-        modelMap.addAttribute("categorys", categoryRepository.findAll());
-        return new ModelAndView("product/newProduct", modelMap);
+        model.addAttribute("product", new ProductPayload());
+        model.addAttribute("categorys", categoryRepository.findAll());
+
+
+        List<Order> orderList = orderService.findAll();
+        List<Integer> ints = orderList.stream().map(Order::getQuantityOrder).collect(Collectors.toList());
+        int sumQuantityOrder = ints.stream().reduce(0, (a, b) -> a + b);
+        model.addAttribute("sum",sumQuantityOrder);
+
+        model.addAttribute("message", "Add New Product !");
+
+        return "product/newProduct";
     }
-
     @GetMapping("products")
     public String AllProduct(
             Model model,
@@ -59,7 +69,10 @@ public class ProductController {
         // pageable
         int currentPage = page.orElse(1);
         int pageSize = size.orElse(8);
-        Page<Products> productsPage = productRepository.findAll(PageRequest.of(currentPage - 1, pageSize));
+        Page<Products> productsPage = productRepository.getProductsByActiveTrue(PageRequest.of(currentPage - 1, pageSize));
+        productsPage.stream().collect(Collectors.toList());
+
+
         model.addAttribute("productPage", productsPage);
         int totalPages = productsPage.getTotalPages();
         if (totalPages > 0) {
@@ -79,36 +92,36 @@ public class ProductController {
         // order
         model.addAttribute("orderPayload", new OrderPayLoad());
 
+        //pageable
+        model.addAttribute("pathvariable","products");
+
+        // order
+        List<Order> orderList = orderService.findAll();
+        List<Integer> ints = orderList.stream().map(Order::getQuantityOrder).collect(Collectors.toList());
+        int sumQuantityOrder = ints.stream().reduce(0, (a, b) -> a + b);
+        model.addAttribute("sum",sumQuantityOrder);
+
         return "product/products";
     }
 
     @GetMapping("detail/{productId}")
-    public ModelAndView detailProduct(@PathVariable("productId") int productId, ProductPayload productPayload, Model model,
-                                      @RequestParam("page") Optional<Integer> page,
-                                      @RequestParam("size") Optional<Integer> size) {
-
-        // pageable
-        int currentPage = page.orElse(1);
-        int pageSize = size.orElse(8);
-        Page<Products> productsPage = productRepository.findAll(PageRequest.of(currentPage - 1, pageSize));
-        model.addAttribute("productPage", productsPage);
-        int totalPages = productsPage.getTotalPages();
-        if (totalPages > 0) {
-            List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages).boxed().collect(Collectors.toList());
-            model.addAttribute("pageNumbers", pageNumbers);
-        }
-        model.addAttribute("products", productsPage);
+    public String detailProduct(@PathVariable("productId") int productId,
+                                      Model model) {
         Products product = productService.getProductById(productId);
-        String massage = "Edit Product " + product.getProductName();
-        List<Products> productsList = productService.findAll();
-        model.addAttribute("categorys", categoryRepository.findAll());
-        model.addAttribute("product", product);
-        model.addAttribute("message", massage);
-        productPayload.setProductId(productId);
-        return new ModelAndView("product/newProduct", "product", productPayload);
-    }
+        ProductPayload productPayload = new ProductPayload();
+        productPayload.setProductId(product.getProductId());
+        model.addAttribute("product",productPayload);
 
-    //
+
+        List<Order> orderList = orderService.findAll();
+        List<Integer> ints = orderList.stream().map(Order::getQuantityOrder).collect(Collectors.toList());
+        int sumQuantityOrder = ints.stream().reduce(0, (a, b) -> a + b);
+        model.addAttribute("sum",sumQuantityOrder);
+
+        model.addAttribute("message","edit Product " + product.getProductName());
+
+        return "product/newProduct";
+    }
     @GetMapping("categoryId/{categoryId}")
     public String getProductByCategoryId(@PathVariable("categoryId") int categoryId,
                                          Model model,
@@ -118,7 +131,8 @@ public class ProductController {
         // pageable
         int currentPage = page.orElse(1);
         int pageSize = size.orElse(8);
-        Page<Products> productsPage = productRepository.findAll(PageRequest.of(currentPage - 1, pageSize));
+        Page<Products> productsPage = productService.getProductByCategoryId(categoryId, PageRequest.of(currentPage - 1, pageSize) );
+        productsPage.stream().collect(Collectors.toList());
         model.addAttribute("productPage", productsPage);
         int totalPages = productsPage.getTotalPages();
         if (totalPages > 0) {
@@ -126,11 +140,23 @@ public class ProductController {
             model.addAttribute("pageNumbers", pageNumbers);
         }
         model.addAttribute("products", productsPage);
+
+
         List<Products> productsList = productService.findAll();
         model.addAttribute("categorys", categoryRepository.findAll());
-        model.addAttribute("products", productService.getProductByCategoryId(categoryId));
+
+
+        model.addAttribute("pathvariable","categoryId");
+
+
         List<String> brandList = productsList.stream().map(Products::getBrand).distinct().collect(Collectors.toList());
         model.addAttribute("brands", brandList);
+
+        List<Order> orderList = orderService.findAll();
+        List<Integer> ints = orderList.stream().map(Order::getQuantityOrder).collect(Collectors.toList());
+        int sumQuantityOrder = ints.stream().reduce(0, (a, b) -> a + b);
+        model.addAttribute("sum",sumQuantityOrder);
+
         return "product/products";
     }
 
@@ -143,7 +169,7 @@ public class ProductController {
         // pageable
         int currentPage = page.orElse(1);
         int pageSize = size.orElse(8);
-        Page<Products> productsPage = productRepository.findAll(PageRequest.of(currentPage - 1, pageSize));
+        Page<Products> productsPage = productService.getProductbyBrand(brand, PageRequest.of(currentPage - 1, pageSize));
         model.addAttribute("productPage", productsPage);
         int totalPages = productsPage.getTotalPages();
         if (totalPages > 0) {
@@ -151,11 +177,25 @@ public class ProductController {
             model.addAttribute("pageNumbers", pageNumbers);
         }
         model.addAttribute("products", productsPage);
+
+
         List<Products> productsList = productService.findAll();
         model.addAttribute("categorys", categoryRepository.findAll());
-        model.addAttribute("products", productService.getProductbyBrand(brand));
+
+
         List<String> brandList = productsList.stream().map(Products::getBrand).distinct().collect(Collectors.toList());
         model.addAttribute("brands", brandList);
+
+
+        model.addAttribute("pathvariable","brand");
+
+
+        List<Order> orderList = orderService.findAll();
+        List<Integer> ints = orderList.stream().map(Order::getQuantityOrder).collect(Collectors.toList());
+        int sumQuantityOrder = ints.stream().reduce(0, (a, b) -> a + b);
+        model.addAttribute("sum",sumQuantityOrder);
+
+
         return "product/products";
     }
 
@@ -169,7 +209,7 @@ public class ProductController {
         // pageable
         int currentPage = page.orElse(1);
         int pageSize = size.orElse(8);
-        Page<Products> productsPage = productRepository.findAll(PageRequest.of(currentPage - 1, pageSize));
+        Page<Products> productsPage = productService.getProductByMinMaxPrice(min, max,PageRequest.of(currentPage - 1, pageSize));
         model.addAttribute("productPage", productsPage);
         int totalPages = productsPage.getTotalPages();
         if (totalPages > 0) {
@@ -177,8 +217,8 @@ public class ProductController {
             model.addAttribute("pageNumbers", pageNumbers);
         }
         model.addAttribute("products", productsPage);
-        List<Products> getMinMaxPrice = productService.getProductByMinMaxPrice(min, max);
-        model.addAttribute("products",getMinMaxPrice);
+
+
         // category
         model.addAttribute("categorys", categoryRepository.findAll());
 
@@ -186,6 +226,13 @@ public class ProductController {
         List<Products> productsList = productService.findAll();
         List<String> brandList = productsList.stream().map(Products::getBrand).distinct().collect(Collectors.toList());
         model.addAttribute("brands", brandList);
+
+        model.addAttribute("pathvariable","price");
+
+        List<Order> orderList = orderService.findAll();
+        List<Integer> ints = orderList.stream().map(Order::getQuantityOrder).collect(Collectors.toList());
+        int sumQuantityOrder = ints.stream().reduce(0, (a, b) -> a + b);
+        model.addAttribute("sum",sumQuantityOrder);
         return "product/products";
     }
 
@@ -207,7 +254,7 @@ public class ProductController {
         }
         model.addAttribute("products", productsPage);
         List<Products> getMinPrice = productService.getProductPriceMin(min);
-        model.addAttribute("products",getMinPrice);
+        model.addAttribute("products", getMinPrice);
         // category
         model.addAttribute("categorys", categoryRepository.findAll());
 
@@ -215,29 +262,44 @@ public class ProductController {
         List<Products> productsList = productService.findAll();
         List<String> brandList = productsList.stream().map(Products::getBrand).distinct().collect(Collectors.toList());
         model.addAttribute("brands", brandList);
+
+
+        List<Order> orderList = orderService.findAll();
+        List<Integer> ints = orderList.stream().map(Order::getQuantityOrder).collect(Collectors.toList());
+        int sumQuantityOrder = ints.stream().reduce(0, (a, b) -> a + b);
+        model.addAttribute("sum",sumQuantityOrder);
+
         return "product/products";
     }
 
+    @GetMapping("delete/{productId}")
+    public String deleteProduct (@PathVariable("productId") int productId, Model model){
+
+        Products product = productService.getProductById(productId);
+        product.setActive(false);
+        model.addAttribute("message","successful delete " + product.getProductName());
+        productService.saveProduct(product);
+        List<Products> productsList = productService.findAll();
+        model.addAttribute("products", productsList);
+        model.addAttribute("categorys", categoryRepository.findAll());
+
+
+        List<Order> orderList = orderService.findAll();
+        List<Integer> ints = orderList.stream().map(Order::getQuantityOrder).collect(Collectors.toList());
+        int sumQuantityOrder = ints.stream().reduce(0, (a, b) -> a + b);
+        model.addAttribute("sum",sumQuantityOrder);
+
+        return "product/products";
+
+    }
 
 
     @PostMapping("saveProduct")
     public String saveProduct(@ModelAttribute ProductPayload productPayload,
-                                    @Validated BindingResult result,
-                                    HttpServletRequest request,
-                                    Model model,
-                                    @RequestParam("page") Optional<Integer> page,
-                                    @RequestParam("size") Optional<Integer> size) throws IOException {
-        if (result.hasErrors()) {
-            List<String> errorList = new ArrayList<String>();
-            for (ObjectError objectError : result.getAllErrors()) {
-                if (!errorList.contains(objectError.getDefaultMessage())){
-                    errorList.add(objectError.getDefaultMessage());
-                }
-            }
-            model.addAttribute("validationError",errorList);
-            model.addAttribute("product",new ProductPayload());
-            return "product/newProduct";
-        }
+                              HttpServletRequest request,
+                              Model model,
+                              @RequestParam("page") Optional<Integer> page,
+                              @RequestParam("size") Optional<Integer> size) throws IOException {
 
         int currentPage = page.orElse(1);
         int pageSize = size.orElse(8);
@@ -260,6 +322,13 @@ public class ProductController {
         model.addAttribute("brands", brandList);
         String message = "success save product" + productPayload.getProductName() + " !";
         model.addAttribute("message", message);
+
+
+        List<Order> orderList = orderService.findAll();
+        List<Integer> ints = orderList.stream().map(Order::getQuantityOrder).collect(Collectors.toList());
+        int sumQuantityOrder = ints.stream().reduce(0, (a, b) -> a + b);
+        model.addAttribute("sum",sumQuantityOrder);
+
         return "product/products";
 
 

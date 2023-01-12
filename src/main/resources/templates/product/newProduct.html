@@ -75,44 +75,34 @@ URL: https://www.freshdesignweb.com/ustora/ -->
 
             <div class="col-sm-6">
                 <div class="shopping-item">
-                    <a href="cart.html">Cart - <span class="cart-amunt">$100</span> <i class="fa fa-shopping-cart"></i>
-                        <span class="product-count">5</span></a>
+                    <a href="cart.html"><span class="cart-amunt"></span> <i class="fa fa-shopping-cart"></i>
+                        <span class="product-count" th:text="${sum}"></span></a>
                 </div>
             </div>
         </div>
     </div>
 </div>
-<!-- End site branding area -->
-<div class="mainmenu-area">
-    <div class="container">
-        <div class="row">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-            </div>
-            <div class="navbar-collapse collapse nav-header">
-                <ul class="nav navbar-nav navbar-menu ">
-                    <li><a th:href="@{/}">Home</a></li>
-                    <li><a th:href="@{/products}">Product</a></li>
-                    <li><a th:href="@{/cart}">Cart</a></li>
-                    <li><a th:href="@{/checkout}">Checkout</a></li>
-                    <li><a th:href="@{/newProduct}"> Add New Product</a></li>
-                    <li><a th:href="@{/contact}">Contact</a></li>
-                </ul>
-            </div>
-        </div>
+
+
+<div class="container">
+    <div class="navbar-collapse collapse nav-header">
+        <ul class="nav navbar-nav navbar-menu ">
+            <li><a th:href="@{/}">Home</a></li>
+            <li><a th:href="@{/products}">Product</a></li>
+            <li><a th:href="@{/cart}">Cart</a></li>
+            <li><a th:href="@{/checkout}">Checkout</a></li>
+            <li><a th:href="@{/newProduct}"> Add New Product</a></li>
+            <li><a th:href="@{/contact}">Contact</a></li>
+        </ul>
     </div>
-</div>
+</div> <!-- End mainmenu area -->
+
 <div class="product-big-title-area">
     <div class="container">
         <div class="row">
             <div class="col-md-12">
                 <div class="product-bit-title text-center">
-                    <h2 th:if="${message!= null}" th:text="${message}"> All Product</h2>
+                    <h2  th:text="${message}"></h2>
                 </div>
             </div>
         </div>
@@ -126,43 +116,54 @@ URL: https://www.freshdesignweb.com/ustora/ -->
         <div class="row">
 
             <div class="col-md-12">
-                <form th:action="@{/saveProduct}" method="post" enctype="multipart/form-data" th:object="${product}">
+                <form th:action="@{/saveProduct}" method="post" enctype="multipart/form-data" th:object="${product}"
+                      class="newProductForm">
                     <div class="col-sm-6 form-css">
                         <div class="product-inner">
                             <div class="form-outline flex-fill mb-0">
                                 <label class="form-label">Product Name</label>
-                                <input type="text" th:field="*{productName}" class="form-control"/>
+                                <p class="text-danger" th:if="${#fields.hasErrors('productName')}"
+                                   th:errorclass="error" th:errors="${product.productName}"></p>
+                                <input type="text" th:field="${product.productName}" class="form-control"/>
 
                             </div>
                             <div class="form-outline flex-fill mb-0">
                                 <label class="form-label">Price</label>
-                                <label class="text-danger" th:text="${validationError}"></label>
-                                <input type="text" th:field="*{productPrice}" class="form-control"/>
+                                <p class="text-danger" th:if="${#fields.hasErrors('productPrice')}"
+                                   th:errorclass="error" th:errors="${product.productPrice}"></p>
+                                <input type="text" th:field="${product.productPrice}" class="form-control"/>
 
                             </div>
 
                             <div class="form-outline flex-fill mb-0">
                                 <label class="form-label">Quantity</label>
-                                <label class="text-danger" th:text="${validationError}"></label>
-                                <input type="text" th:field="*{quantity}" class="form-control"/>
+                                <p class="text-danger" th:if="${#fields.hasErrors('quantity')}"
+                                   th:errorclass="error" th:errors="${product.quantity}"></p>
+                                <input type="text" th:field="${product.quantity}" class="form-control"/>
 
                             </div>
 
                             <div class="form-outline flex-fill mb-0">
                                 <label class="form-label">Brand</label>
-                                <input type="text" th:field="*{brand}" class="form-control"/>
+                                <p class="text-danger" th:if="${#fields.hasErrors('brand')}"
+                                   th:errorclass="error" th:errors="${product.brand}"></p>
+                                <input type="text" th:field="${product.brand}" class="form-control"/>
 
                             </div>
                             <div class="form-outline flex-fill mb-0">
                                 <label class="form-label">Description</label>
-                                <textarea th:field="*{productDescription}" class="form-control"
+                                <p class="text-danger" th:if="${#fields.hasErrors('productDescription')}"
+                                   th:errorclass="error" th:errors="${product.productDescription}"></p>
+                                <textarea th:field="${product.productDescription}" class="form-control"
                                           id="exampleFormControlTextarea1" rows="4"></textarea>
 
                             </div>
 
                             <div class="form-outline flex-fill mb-0">
                                 <label class="form-label">Category</label>
-                                <select class="form-select" id="sel2" th:field="*{category}">
+                                <p class="text-danger" th:if="${#fields.hasErrors('category')}"
+                                   th:errorclass="error" th:errors="${product.category}"></p>
+                                <select class="form-select" id="sel2" th:field="${product.category}">
                                     <option th:each="category : ${categorys} " th:text="${category.categoryName}"
                                             th:value="${category.categoryId}"></option>
                                 </select>
@@ -171,12 +172,15 @@ URL: https://www.freshdesignweb.com/ustora/ -->
                         </div>
                         <div class="form-outline flex-fill mb-0">
                             <label class="form-label">Product Image</label>
-                            <input class="form-control" type="file" id="formFile" th:field="*{file}">
+                            <!--/*@thymesVar id="file" type=""*/-->
+                            <input class="form-control" type="file" id="formFile" th:field="${product.file}">
                         </div>
-                        <div th:text="${message}"></div>
                         <div class="form-group d-flex justify-content-center">
 
                             <button type="submit" class="btn btn-primary m-4"> save</button>
+                            <a th:href="@{/delete/{productId}(productId=${product.getProductId()})}">
+                                <button type="button" class="btn btn-primary m-4"> DELETE</button>
+                            </a>
 
                         </div>
 
@@ -196,47 +200,25 @@ URL: https://www.freshdesignweb.com/ustora/ -->
             <div class="col-md-3 col-sm-6">
                 <div class="footer-about-us">
                     <h2>u<span>Stora</span></h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Perferendis sunt id
-                        doloribus vero quam laborum quas alias dolores blanditiis iusto consequatur,
-                        modi aliquid eveniet eligendi iure eaque ipsam iste, pariatur omnis sint!
-                        Suscipit, debitis, quisquam. Laborum commodi veritatis magni at?</p>
+
                     <div class="footer-social">
-                        <a href="#" target="_blank">
-                            <i class="fa fa-facebook"></i>
-                        </a>
-                        <a href="#" target="_blank">
-                            <i class="fa fa-twitter"></i>
-                        </a>
-                        <a href="#" target="_blank">
-                            <i class="fa fa-youtube"></i>
-                        </a>
-                        <a href="#" target="_blank">
-                            <i class="fa fa-linkedin"></i>
-                        </a>
+                        <a href="https://www.facebook.com/profile.php?id=100022777150394" target="_blank"><i class="fa fa-facebook"></i></a>
+                        <a href="#" target="_blank"><i class="fa fa-twitter"></i></a>
+                        <a href="https://www.youtube.com/@MixiGaming89" target="_blank"><i class="fa fa-youtube"></i></a>
+                        <a href="#" target="_blank"><i class="fa fa-linkedin"></i></a>
                     </div>
                 </div>
             </div>
 
             <div class="col-md-3 col-sm-6">
                 <div class="footer-menu">
-                    <h2 class="footer-wid-title">User Navigation
-                    </h2>
+                    <h2 class="footer-wid-title">User Navigation </h2>
                     <ul>
-                        <li>
-                            <a href="">My account</a>
-                        </li>
-                        <li>
-                            <a href="">Order history</a>
-                        </li>
-                        <li>
-                            <a href="">Wishlist</a>
-                        </li>
-                        <li>
-                            <a href="">Vendor contact</a>
-                        </li>
-                        <li>
-                            <a href="">Front page</a>
-                        </li>
+                        <li><a href="#">My account</a></li>
+                        <li><a href="#">Order history</a></li>
+                        <li><a href="#">Wishlist</a></li>
+                        <li><a href="#">Vendor contact</a></li>
+                        <li><a href="#">Front page</a></li>
                     </ul>
                 </div>
             </div>
@@ -245,21 +227,10 @@ URL: https://www.freshdesignweb.com/ustora/ -->
                 <div class="footer-menu">
                     <h2 class="footer-wid-title">Categories</h2>
                     <ul>
-                        <li>
-                            <a href="">Mobile Phone</a>
+                        <li th:each="category : ${categorys}">
+                            <a th:href="@{/category(categoryId=${category.getCategoryId()})}" th:text="${category.getCategoryName()}"></a>
                         </li>
-                        <li>
-                            <a href="">Home accesseries</a>
-                        </li>
-                        <li>
-                            <a href="">LED TV</a>
-                        </li>
-                        <li>
-                            <a href="">Computer</a>
-                        </li>
-                        <li>
-                            <a href="">Gadets</a>
-                        </li>
+
                     </ul>
                 </div>
             </div>
@@ -267,25 +238,27 @@ URL: https://www.freshdesignweb.com/ustora/ -->
             <div class="col-md-3 col-sm-6">
                 <div class="footer-newsletter">
                     <h2 class="footer-wid-title">Newsletter</h2>
-                    <p>Sign up to our newsletter and get exclusive deals you wont find anywhere else
-                        straight to your inbox!</p>
+                    <p>Sign up to our newsletter and get exclusive deals you wont find anywhere else straight to your
+                        inbox!</p>
                     <div class="newsletter-form">
-                        <input type="email" placeholder="Type your email">
-                        <input type="submit" value="Subscribe">
+                        <form action="#">
+                            <input type="email" placeholder="Type your email">
+                            <input type="submit" value="Subscribe">
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
+</div> <!-- End footer top area -->
+
 <div class="footer-bottom-area">
     <div class="container">
         <div class="row">
             <div class="col-md-8">
                 <div class="copyright">
-                    <p>&copy; 2015 uCommerce. All Rights Reserved.
-                        <a href="http://www.freshdesignweb.com" target="_blank">freshDesignweb.com</a>
-                    </p>
+                    <p>&copy; 2015 uCommerce. All Rights Reserved. <a href="https://www.facebook.com/profile.php?id=100022777150394"
+                                                                      target="_blank">DINH HOA</a></p>
                 </div>
             </div>
 
@@ -299,32 +272,134 @@ URL: https://www.freshdesignweb.com/ustora/ -->
             </div>
         </div>
     </div>
-</div>
+</div> <!-- End footer bottom area -->
 
 <!-- Latest jQuery form server -->
 <script src="https://code.jquery.com/jquery.min.js"></script>
 
 <!-- Bootstrap JS form CDN -->
-<script
-        src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 
 <!-- jQuery sticky menu -->
-<script src="../../js/owl.carousel.min.js"></script>
-<script src="../../js/jquery.sticky.js"></script>
+<script src="js/owl.carousel.min.js"></script>
+<script src="js/jquery.sticky.js"></script>
 
 <!-- jQuery easing -->
-<script src="../../js/jquery.easing.1.3.min.js"></script>
+<script src="js/jquery.easing.1.3.min.js"></script>
 
 <!-- Main Script -->
-<script src="../../js/main.js"></script>
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+<script src="js/main.js"></script>
+
+<!-- Slider -->
+<script type="text/javascript" src="js/bxslider.min.js"></script>
+<script type="text/javascript" src="js/script.slider.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"
+        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
         crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js"
-        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
-        crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"
-        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+</body>
+</html>
+<div class="footer-top-area">
+    <div class="zigzag-bottom"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3 col-sm-6">
+                <div class="footer-about-us">
+                    <h2>u<span>Stora</span></h2>
+
+                    <div class="footer-social">
+                        <a href="https://www.facebook.com/profile.php?id=100022777150394" target="_blank"><i class="fa fa-facebook"></i></a>
+                        <a href="#" target="_blank"><i class="fa fa-twitter"></i></a>
+                        <a href="https://www.youtube.com/@MixiGaming89" target="_blank"><i class="fa fa-youtube"></i></a>
+                        <a href="#" target="_blank"><i class="fa fa-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3 col-sm-6">
+                <div class="footer-menu">
+                    <h2 class="footer-wid-title">User Navigation </h2>
+                    <ul>
+                        <li><a href="#">My account</a></li>
+                        <li><a href="#">Order history</a></li>
+                        <li><a href="#">Wishlist</a></li>
+                        <li><a href="#">Vendor contact</a></li>
+                        <li><a href="#">Front page</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="col-md-3 col-sm-6">
+                <div class="footer-menu">
+                    <h2 class="footer-wid-title">Categories</h2>
+                    <ul>
+                        <li th:each="category : ${categorys}">
+                            <a th:href="@{/category(categoryId=${category.getCategoryId()})}" th:text="${category.getCategoryName()}"></a>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+
+            <div class="col-md-3 col-sm-6">
+                <div class="footer-newsletter">
+                    <h2 class="footer-wid-title">Newsletter</h2>
+                    <p>Sign up to our newsletter and get exclusive deals you wont find anywhere else straight to your
+                        inbox!</p>
+                    <div class="newsletter-form">
+                        <form action="#">
+                            <input type="email" placeholder="Type your email">
+                            <input type="submit" value="Subscribe">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> <!-- End footer top area -->
+
+<div class="footer-bottom-area">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="copyright">
+                    <p>&copy; 2015 uCommerce. All Rights Reserved. <a href="https://www.facebook.com/profile.php?id=100022777150394"
+                                                                      target="_blank">DINH HOA</a></p>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="footer-card-icon">
+                    <i class="fa fa-cc-discover"></i>
+                    <i class="fa fa-cc-mastercard"></i>
+                    <i class="fa fa-cc-paypal"></i>
+                    <i class="fa fa-cc-visa"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> <!-- End footer bottom area -->
+
+<!-- Latest jQuery form server -->
+<script src="https://code.jquery.com/jquery.min.js"></script>
+
+<!-- Bootstrap JS form CDN -->
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+
+<!-- jQuery sticky menu -->
+<script src="js/owl.carousel.min.js"></script>
+<script src="js/jquery.sticky.js"></script>
+
+<!-- jQuery easing -->
+<script src="js/jquery.easing.1.3.min.js"></script>
+
+<!-- Main Script -->
+<script src="js/main.js"></script>
+
+<!-- Slider -->
+<script type="text/javascript" src="js/bxslider.min.js"></script>
+<script type="text/javascript" src="js/script.slider.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"
+        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
         crossorigin="anonymous"></script>
 </body>
 </html>

@@ -6,6 +6,9 @@ import com.example.computerstore.model.Products;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -61,18 +64,18 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public List<Products> getProductByCategoryId(int categoryId) {
-        return productsRepository.findByCategory_CategoryId(categoryId);
+    public Page<Products> getProductByCategoryId(int categoryId, Pageable pageable) {
+        return productsRepository.findByCategory_CategoryIdAndActiveTrue(categoryId, pageable);
     }
 
     @Override
-    public List<Products> getProductbyBrand(String brand) {
-        return productsRepository.findProductsByBrand(brand);
+    public Page<Products> getProductbyBrand(String brand, Pageable pageable) {
+        return productsRepository.findProductsByBrand(brand, pageable);
     }
 
     @Override
     public List<Products> findAll() {
-        return productsRepository.findAll();
+        return productsRepository.findAllByActiveTrue();
     }
 
     @Override
@@ -81,13 +84,23 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public List<Products> getProductByMinMaxPrice(int min, int max) {
-        return productsRepository.findProductsByProductPriceIsBetween(min, max);
+    public Page<Products> getProductByMinMaxPrice(int min, int max, Pageable pageable) {
+        return productsRepository.findProductsByProductPriceIsBetweenAndActiveTrue(min, max, pageable);
     }
 
     @Override
     public List<Products> getProductPriceMin(int min) {
         return productsRepository.findProductsByProductPriceAfter(min);
+    }
+
+    @Override
+    public Products saveProduct(Products product) {
+        return productsRepository.save(product);
+    }
+
+    @Override
+    public List<Products> findAllProductByBrand(String brand) {
+        return productsRepository.getProductsByBrand(brand);
     }
 
 

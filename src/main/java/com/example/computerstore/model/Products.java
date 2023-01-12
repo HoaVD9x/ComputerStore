@@ -1,8 +1,10 @@
 package com.example.computerstore.model;
 
-import com.example.computerstore.Payload.ProductPayload;
+
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotEmpty;
+
+
+
 
 @Entity
 @Table(name = "product")
@@ -15,7 +17,7 @@ public class Products {
     @Column(name = "productName")
     private String productName;
 
-    @NotEmpty(message = "enter a number greater than 0")
+
     @Column(name = "productPrice")
     private int productPrice;
 
@@ -25,7 +27,7 @@ public class Products {
     @Column(name = "productImageLink")
     private String productImageLink;
 
-    @NotEmpty(message = "enter a number greater than 0")
+
     @Column(name = "quantity")
     private int quantity;
 
@@ -40,8 +42,8 @@ public class Products {
     @JoinColumn(name = "orderId")
     private Order order;
 
-   //    @Column(name = "active")
-//    private boolean active = true;
+       @Column(name = "active")
+    private boolean active = true;
 
 
 //   @ManyToOne
@@ -74,20 +76,26 @@ public class Products {
         this.brand = brand;
     }
 
-    //    public boolean isActive() {
-//        return active;
-//    }
-//
-//    public void setActive(boolean active) {
-//        this.active = active;
-//    }
+    public boolean isActive() {
+        return active;
+    }
 
+    public void setActive(boolean active) {
+        this.active = active;
+    }
 
-
-
-
-
-
+    public Products(int productId, String productName, int productPrice, String productDescription, String productImageLink, int quantity, String brand, Category category, Order order, boolean active) {
+        this.productId = productId;
+        this.productName = productName;
+        this.productPrice = productPrice;
+        this.productDescription = productDescription;
+        this.productImageLink = productImageLink;
+        this.quantity = quantity;
+        this.brand = brand;
+        this.category = category;
+        this.order = order;
+        this.active = active;
+    }
 
     public int getProductId() {
         return productId;

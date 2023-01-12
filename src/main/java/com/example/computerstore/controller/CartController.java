@@ -1,6 +1,7 @@
 package com.example.computerstore.controller;
 
 import com.example.computerstore.Payload.OrderPayLoad;
+import com.example.computerstore.dao.CategoryRepository;
 import com.example.computerstore.dao.OrderRepository;
 import com.example.computerstore.model.Cart;
 import com.example.computerstore.model.Order;
@@ -21,6 +22,9 @@ public class CartController {
     @Autowired
     private OrderService orderService;
 
+    @Autowired
+    private CategoryRepository categoryRepository;
+
     @GetMapping("cart")
     public String cart(Model model) {
         List<Order> cartList = orderService.findAll();
@@ -34,6 +38,14 @@ public class CartController {
             model.addAttribute("sumPrice", sumPrice);
         }
         model.addAttribute("order",new OrderPayLoad());
+
+        model.addAttribute("categorys", categoryRepository.findAll());
+
+        List<Order> orderList = orderService.findAll();
+        List<Integer> ints = orderList.stream().map(Order::getQuantityOrder).collect(Collectors.toList());
+        int sumQuantityOrder = ints.stream().reduce(0, (a, b) -> a + b);
+        model.addAttribute("sum",sumQuantityOrder);
+
         return "product/cart";
     }
 }
