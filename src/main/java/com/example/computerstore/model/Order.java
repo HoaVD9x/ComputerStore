@@ -1,35 +1,35 @@
 package com.example.computerstore.model;
 
-import com.example.computerstore.Payload.OrderPayLoad;
 import jakarta.persistence.*;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
+import java.io.Serializable;
+import java.util.Set;
 
 @Entity
-@Table(name = "'order")
-public class Order {
-
+@Table(name = "orders")
+public class Order implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "orderId", nullable = false, unique = true)
     private int orderId;
 
-    @Column(name = "quantityOrder")
-    private int quantityOrder;
+    @Column(nullable = false)
+    private int amount;
 
-
-    @ManyToOne
-    @JoinColumn(name = "product_id")
-    private Products product;
+    @Column(nullable = false)
+    private short status;
 
     @ManyToOne
-    @JoinColumn(name = "cartId")
-    private Cart cart;
+    @JoinColumn(name = "userId")
+    private User user;
+@OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    private Set<OrderDetail> orderDetails;
 
-    public Order(int orderId, int quantityOrder, Products product, Cart cart) {
+    public Order(int orderId, int amount, short status, User user) {
         this.orderId = orderId;
-        this.quantityOrder = quantityOrder;
-        this.product = product;
-        this.cart = cart;
+        this.amount = amount;
+        this.status = status;
+        this.user = user;
     }
 
     public Order() {
@@ -44,34 +44,35 @@ public class Order {
         this.orderId = orderId;
     }
 
-    public int getQuantityOrder() {
-        return quantityOrder;
+    public int getAmount() {
+        return amount;
     }
 
-    public void setQuantityOrder(int quantityOrder) {
-        this.quantityOrder = quantityOrder;
+    public void setAmount(int amount) {
+        this.amount = amount;
     }
 
-
-    public Products getProduct() {
-        return product;
+    public short getStatus() {
+        return status;
     }
 
-    public void setProduct(Products product) {
-        this.product = product;
+    public void setStatus(short status) {
+        this.status = status;
     }
 
-    public Cart getCart() {
-        return cart;
+    public User getUser() {
+        return user;
     }
 
-    public void setCart(Cart cart) {
-        this.cart = cart;
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    public void orderToEntity(OrderPayLoad orderPayLoad) {
-        this.orderId = orderPayLoad.getOrderId();
-        this.quantityOrder = orderPayLoad.getQuantityOrder();
-        this.product = orderPayLoad.getProduct();
+    public Set<OrderDetail> getOrderDetails() {
+        return orderDetails;
+    }
+
+    public void setOrderDetails(Set<OrderDetail> orderDetails) {
+        this.orderDetails = orderDetails;
     }
 }

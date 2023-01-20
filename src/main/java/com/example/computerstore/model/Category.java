@@ -1,8 +1,9 @@
 package com.example.computerstore.model;
 
+
 import jakarta.persistence.*;
 
-import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "category")
@@ -16,25 +17,26 @@ public class Category {
     private String categoryName;
 
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "category")
-    private List<Products> products;
+    @OneToMany(mappedBy = "category",cascade = CascadeType.ALL)
+    private Set<Product> products;
 
     public Category() {
     }
 
-    public Category(int categoryId, String categoryName, List<Products> products) {
+    public Category(int categoryId, String categoryName, Set<Product> products) {
         this.categoryId = categoryId;
         this.categoryName = categoryName;
         this.products = products;
     }
 
-    public List<Products> getProducts() {
+    public Set<Product> getProducts() {
         return products;
     }
 
-    public void setProducts(List<Products> products) {
+    public void setProducts(Set<Product> products) {
         this.products = products;
     }
+
 
     public int getCategoryId() {
         return categoryId;

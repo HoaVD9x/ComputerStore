@@ -1,34 +1,38 @@
 package com.example.computerstore.service;
 
 import com.example.computerstore.Payload.ProductPayload;
-import com.example.computerstore.model.Products;
+import com.example.computerstore.model.Product;
+
+
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+
+
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 public interface ProductService {
-    void save(ProductPayload productPayload, HttpServletRequest request) throws IOException;
+    void save(ProductPayload productPayload, HttpServletRequest request)throws IOException;
 
 
-    Page<Products> getProductByCategoryId(int categoryId, Pageable pageable);
+    Page<Product> getProductByCategoryId(int categoryId, Pageable pageable);
 
-    Page<Products> getProductbyBrand(String brand, Pageable pageable);
+    Page<Product> getProductbyBrand(String brand, Pageable pageable);
 
-    List<Products> findAll();
+    List<Product> findAll();
 
-    Products getProductById(int productId);
+    Optional<Product> getProductById(int productId);
 
-    Page<Products>getProductByMinMaxPrice(int min, int max, Pageable pageable);
+    Page<Product>getProductByMinMaxPrice(int min, int max, Pageable pageable);
 
-    List<Products>getProductPriceMin(int min);
+    List<Product>getProductPriceMin(int min);
 
-    Products saveProduct(Products product);
+    Product saveProduct(Product product);
 
-    List<Products> findAllProductByBrand(String brand);
+    List<Product> findAllProductByBrand(String brand);
 
 
 

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+    <title>Computer Store</title>
+    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" href="../../asset/favicon.ico"/>
+    <!-- Bootstrap icons-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet"/>
+    <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
+            rel="stylesheet">
+    <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="../../css1/styles.css" rel="stylesheet"/>
+
+</head>
+<body>
+<!-- Navigation-->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container px-4 px-lg-5">
+        <a class="navbar-brand" th:href="@{/admin/user}">Computer Store</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span
+                class="navbar-toggler-icon"></span></button>
+        <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+            <div class="w-75">
+                <ul class="navbar-nav justify-content-around">
+                    <li class="nav-item"><a class="nav-link active" aria-current="page" th:href="@{/admin/product}">Home</a></li>
+                    <li class="nav-item"><a th:href="@{/admin/product}" class="nav-link" href="">Product Manage</a></li>
+                    <li class="nav-item"><a th:href="@{/admin/user}" class="nav-link" href="">User Manage</a></li>
+                    <li class="nav-item"><a th:href="@{/admin/order}" class="nav-link" href="">Order Manage</a></li>
+<!--                    <li clas="nav-item"><a th:href=" @{/admin/user/detail(userId=${session.user.getUserId()})}"></a></li>-->
+                    <li class="nav-item"><a th:href="@{/logout}" class="nav-link" href="">Log Out</a></li>
+
+                </ul>
+            </div>
+            <form class="d-flex">
+                <button class="btn btn-outline-dark" type="submit">
+                    <i class="bi-cart-fill me-1"></i>
+                    Cart
+                    <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
+                </button>
+            </form>
+        </div>
+    </div>
+</nav>
+<!-- Header-->
+<!-- Section-->
+<section class="vh-100">
+    <div class="container h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <h2 class="text-center" th:text="${message}"></h2>
+            <div class="col-xl-9">
+                <div class="card" style="border-radius: 15px;">
+                    <form th:action="@{/admin/user/save}" enctype="multipart/form-data" th:object="${user}" method="post">
+                    <div class="card-body">
+                        <h1 class="text-center"> INFORMATION</h1>
+                        <div>
+                            <input type="hidden" th:value="${user.getUserId()}" th:field="${user.userId}">
+                        </div>
+                        <div class="row align-items-center mb-2 mb-2">
+                            <div class="col-md-2">
+                                <h6 class="">User Name</h6>
+                            </div>
+                            <div class="col-md-9 ">
+                                <input type="text" class="form-control form-control-lg" th:value="${user.getUserName()}" th:field="${user.userName}" required/>
+                            </div>
+                        </div>
+                        <div class="row align-items-center mb-2">
+                            <div class="col-md-2">
+                                <h6 class="">First Name</h6>
+                            </div>
+                            <div class="col-md-9 ">
+                                <input type="text" class="form-control form-control-lg" th:value="${user.getFirstName()}" th:field="${user.firstName}" required/>
+                            </div>
+                        </div>
+                        <div class="row align-items-center mb-2">
+                            <div class="col-md-2">
+                                <h6 class="">Last Name</h6>
+                            </div>
+                            <div class="col-md-9 ">
+                                <input type="text" class="form-control form-control-lg" th:value="${user.getLastName()}" th:field="${user.lastName}" required/>
+                            </div>
+                        </div>
+                        <div class="row align-items-center mb-2">
+                            <div class="col-md-2">
+                                <h6>Email address</h6>
+                            </div>
+                            <div class="col-md-9">
+                                <input type="email" class="form-control form-control-lg" th:value="${user.getEmail()} " th:field="${user.email}" required/>
+                            </div>
+                        </div>
+                        <div class="row align-items-center mb-2">
+                            <div class="col-md-2">
+                                <h6>Phone</h6>
+                            </div>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control form-control-lg" th:value="${user.getPhone()}" th:field="${user.phone}" required/>
+                            </div>
+                        </div>
+                        <div class="row align-items-center mb-2">
+                            <div class="col-md-2">
+                                <h6>Option</h6>
+                            </div>
+                            <div class="col-md-9">
+                                <select class="form-select" aria-label="Default select example" th:field="${user.role}" >
+                                    <option th:each="role : ${roles}" th:value="${role.getRoleId()}"  th:text="${role.getRoleName()}" ></option>
+
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex flex-row justify-content-around">
+                        <div class="px-5 py-4" th:if="${user.role == null}">
+                            <a th:href="@{/admin/user/newUser}" >
+                                <button type="button" class="btn btn-primary btn-lg">NEW USER</button>
+                            </a>
+                        </div>
+
+                        <div class="px-5 py-4"><a>
+                            <button type="submit" class="btn btn-primary btn-lg">SAVE USER</button>
+                        </a>
+                        </div>
+                        <div class="px-5 py-4" th:if="${user.getRole() == null}">
+                            <a th:href="@{/admin/user/delete(userId=${user.getUserId()})}">
+                                <button type="submit" class="btn btn-primary btn-lg">DELETE</button>
+                            </a>
+                        </div>
+                    </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    </div>
+</section>
+<!-- Footer-->
+<footer class="py-5 bg-dark">
+    <div class="container"><p class="m-0 text-center text-white">Copyright &copy; Your Website 2022</p></div>
+</footer>
+<!-- Bootstrap core JS-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="../../js1/scripts.js"></script>
+<!-- Core theme JS-->
+
+</body>
+</html>

@@ -1,8 +1,6 @@
 package com.example.computerstore.Payload;
 
-import com.example.computerstore.model.Products;
-
-import java.util.List;
+import com.example.computerstore.model.Product;
 
 public class OrderPayLoad {
 
@@ -10,7 +8,19 @@ public class OrderPayLoad {
 
     private int quantityOrder;
 
-    private Products product;
+    private Product product;
+
+    private int totalPrice;
+
+    public OrderPayLoad(int orderId, int quantityOrder, Product product, int totalPrice) {
+        this.orderId = orderId;
+        this.quantityOrder = quantityOrder;
+        this.product = product;
+        this.totalPrice = totalPrice;
+    }
+
+    public OrderPayLoad() {
+    }
 
     public int getQuantityOrder() {
         return quantityOrder;
@@ -28,11 +38,19 @@ public class OrderPayLoad {
         this.orderId = orderId;
     }
 
-    public Products getProduct() {
+    public Product getProduct() {
         return product;
     }
 
-    public void setProduct(Products product) {
+    public void setProduct(Product product) {
         this.product = product;
+    }
+
+    public int getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(int totalPrice) {
+        this.totalPrice = totalPrice;
     }
 }

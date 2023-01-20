@@ -1,8 +1,11 @@
 package com.example.computerstore.controller;
 
 import com.example.computerstore.dao.CategoryRepository;
-import com.example.computerstore.model.Order;
-import com.example.computerstore.service.OrderService;
+
+import com.example.computerstore.model.OrderDetail;
+import com.example.computerstore.model.User;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,17 +19,13 @@ public class CheckoutController {
     @Autowired
     private CategoryRepository categoryRepository;
 
-    @Autowired
-    private OrderService orderService;
 
     @GetMapping("checkout")
-    public String checkout(Model model) {
-        model.addAttribute("categorys", categoryRepository.findAll());
+    public String checkout(Model model,
+                           HttpServletRequest request,
+                           HttpSession httpSession) {
+        OrderDetail orderDetail = new OrderDetail();
 
-        List<Order> orderList = orderService.findAll();
-        List<Integer> ints = orderList.stream().map(Order::getQuantityOrder).collect(Collectors.toList());
-        int sumQuantityOrder = ints.stream().reduce(0, (a, b) -> a + b);
-        model.addAttribute("sum", sumQuantityOrder);
 
         return "product/checkout";
     }

@@ -1,415 +1,257 @@
 <!DOCTYPE html>
-<!--
-	ustora by freshdesignweb.com
-	Twitter: https://twitter.com/freshdesignweb
-	URL: https://www.freshdesignweb.com/ustora/
--->
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Ustora Demo</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+    <title>Computer Store</title>
+    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" href="../../asset/favicon.ico"/>
+    <!-- Bootstrap icons-->
+    <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
+            rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
 
-    <!-- Google Fonts -->
-    <link href='http://fonts.googleapis.com/css?family=Titillium+Web:400,200,300,700,600' rel='stylesheet'
-          type='text/css'>
-    <link href='http://fonts.googleapis.com/css?family=Roboto+Condensed:400,700,300' rel='stylesheet' type='text/css'>
-    <link href='http://fonts.googleapis.com/css?family=Raleway:400,100' rel='stylesheet' type='text/css'>
-
-    <!-- Bootstrap -->
-    <link rel="stylesheet" href="../../css/bootstrap.min.css">
-
-    <!-- Font Awesome -->
+    <!-- Latest compiled JavaScript -->
+    <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="../../css/font-awesome.min.css">
+    <link href="../../css1/styles.css" rel="stylesheet"/>
 
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="../../css/owl.carousel.css">
-    <link rel="stylesheet" href="../../css/style.css">
-    <link rel="stylesheet" href="../../css/responsive.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+            crossorigin="anonymous"></script>
+    <style>
+        img.card-img-top {
+            height: 150px;
+            object-fit: cover;
+        }
 
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
+    </style>
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 </head>
 <body>
+<!-- Navigation-->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container px-4 px-lg-5">
+        <a class="navbar-brand" th:href="@{/}">Computer Store</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span
+                class="navbar-toggler-icon"></span></button>
+        <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+            <div class="w-75">
+                <ul class="navbar-nav justify-content-around">
+                    <li class="nav-item"><a class="nav-link active" aria-current="page" th:href="@{/}">Home</a></li>
+                    <li class="nav-item"><a th:href="@{/cart}" class="nav-link" href="">Cart</a></li>
+                    <li class="nav-item"><a th:href="@{/checkout}" class="nav-link" href="">Check Out</a></li>
+                    <li class="nav-item"><a th:if="${session.user != null}"
+                                            th:href="@{/userDetail(userName=${session.user.getEmail()})}"
+                                            class="nav-link" href="">My account</a></li>
+                    <li class="nav-item"><a th:if="${session.user == null}" th:href="@{/login}" class="nav-link"
+                                            href="">Login</a></li>
+                    <li class="nav-item"><a th:if="${session.user != null}" th:href="@{/logout}" class="nav-link"
+                                            href="">Log Out</a></li>
 
-<div class="header-area">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-8">
-                <div class="user-menu">
-                    <ul>
-                        <li><a href="#"><i class="fa fa-user"></i> My Account</a></li>
-                        <li><a href="#"><i class="fa fa-heart"></i> Wishlist</a></li>
-                        <li><a href="cart.html"><i class="fa fa-user"></i> My Cart</a></li>
-                        <li><a href="checkout.html"><i class="fa fa-user"></i> Checkout</a></li>
-                        <li><a href="#"><i class="fa fa-user"></i> Login</a></li>
-                    </ul>
-                </div>
+                </ul>
             </div>
-
-        </div>
-    </div>
-</div> <!-- End header area -->
-
-<div class="site-branding-area">
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-6">
-                <div class="logo">
-                    <h1><a th:href="@{/}"><img src="../../img/logo.png"></a></h1>
-                </div>
-            </div>
-
-            <div class="col-sm-6">
-                <div class="shopping-item">
-                    <a th:href="@{/cart}"><span class="cart-amunt"></span> <i class="fa fa-shopping-cart"></i> <span
-                            class="product-count" th:text="${sum}"></span></a>
-                </div>
-            </div>
-        </div>
-    </div>
-</div> <!-- End site branding area -->
-
-<div class="mainmenu-area">
-    <div class="container">
-        <div class="row">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
+            <form class="d-flex">
+                <a th:href="@{/cart}"></a>
+                <button class="btn btn-outline-dark" type="button">
+                    <i class="fas fa-cart-plus"></i>
+                    Cart
+                    <span class="badge bg-dark text-white ms-1 rounded-pill" th:if="${session.orderSession!= null}"
+                          th:text="${session.totalQuantityOrderSession}"></span>
                 </button>
+                </a>
+            </form>
+        </div>
+    </div>
+</nav>
+<!-- Header-->
+<!-- Carousel wrapper -->
+<div id="carouselBasicExample" class="carousel slide carousel-fade" data-mdb-ride="carousel">
+
+    <div class="carousel-inner">
+        <!-- Single item -->
+        <div class="carousel-item active">
+            <img class="d-block w-100 card-img-top " style="height: 300px;" alt="Sunset Over the City"
+                 src="../../img/MacBookPro_M2_preorder_880x220.jpg"/>
+            <div class="carousel-caption d-none d-md-block">
+
+                <a th:href="@{/brand/Apple}">
+                    <button class="btn btn-light"> shop Now</button>
+                </a>
             </div>
-            <div class="navbar-collapse collapse nav-header">
-                <ul class="nav navbar-nav navbar-menu ">
-                    <li><a th:href="@{/}">Home</a></li>
-                    <li><a th:href="@{/products}">Product</a></li>
-                    <li><a th:href="@{/cart}">Cart</a></li>
-                    <li><a th:href="@{/checkout}">Checkout</a></li>
-                    <li><a th:href="@{/newProduct}"> Add New Product</a></li>
-                    <li><a th:href="@{/contact}">Contact</a></li>
+        </div>
+
+        <!-- Single item -->
+
+    </div>
+    <!-- Inner -->
+
+    <!-- Controls -->
+
+</div>
+<!-- Carousel wrapper -->
+<!-- Section-->
+<section class="py-5">
+    <div class="container px-4 px-lg-5 mt-5 d-flex flex-row">
+        <div class="col-2 m-4">
+
+            <div class="d-flex justify-content-between"><h5> Filter</h5>
+                <div class="d-flex align-items-center">
+                    <i class="fa fa-filter " aria-hidden="true"></i>
+                </div>
+            </div>
+            <div class="dropdown">
+                <button type="button" class="btn btn-light dropdown-toggle text-center w-100" data-bs-toggle="dropdown">
+                    <!-- name -->Category
+                </button>
+                <ul class="dropdown-menu">
+                    <li th:each="categorty : ${ categorys}"><a class="dropdown-item text-center"
+                                                               th:href="@{/category(categoryId=${categorty.getCategoryId()})}"
+                                                               th:text="${categorty.getCategoryName()}"></a></li>
+
+                </ul>
+            </div>
+            <div class="dropdown">
+                <button type="button" class="btn btn-light dropdown-toggle text-center w-100" data-bs-toggle="dropdown">
+                    <!-- name -->Brand
+                </button>
+                <ul class="dropdown-menu">
+                    <li th:each="brand : ${ brands}"><a class="dropdown-item text-center"
+                                                        th:href="@{/brand/{brand}(brand=${brand})}"
+                                                        th:text="${brand}"></a></li>
+
+                </ul>
+            </div>
+            <div class="dropdown">
+                <button type="button" class="btn btn-light dropdown-toggle text-center w-100" data-bs-toggle="dropdown">
+                    <!-- name -->Price
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a th:href="@{/price(min=0, max=30000)}">
+                        <button type="button" class="btn btn-light w-100 text-center">0 円 ~ 30000 円</button>
+                    </a></li>
+                    <li><a th:href="@{/price(min=30000, max=60000)}">
+                        <button type="button" class="btn btn-light w-100 text-center">30000 円 ~ 60000 円</button>
+                    </a></li>
+                    <li><a th:href="@{/price(min=60000, max=90000)}">
+                        <button type="button" class="btn btn-light w-100 text-center">60000 円 ~ 90000 円</button>
+                    </a></li>
+                    <li><a th:href="@{/minPrice(min=90000)}">
+                        <button type="button" class="btn btn-light w-100 text-center"> 90000 円 ~</button>
+                    </a></li>
+
                 </ul>
             </div>
         </div>
-    </div>
-</div> <!-- End mainmenu area -->
 
-<!--<div class="slider-area">-->
-<!--    &lt;!&ndash; Slider &ndash;&gt;-->
-<!--    <div class="block-slider block-slider4">-->
-<!--        <ul class="" id="bxslider-home4">-->
-<!--            <li th:each="brand : ${brands}" class="img-style" >-->
-<!--                <img th:src="${brand.getProductImageLink()}" alt="Slide" class="img-style col-md-8">-->
-<!--                <div class="caption-group col-md-4 col-lg-4 col-xl-4"  >-->
-<!--                    <h3 class="caption title" th:text="${brand.getProductDescription()}">-->
-<!--                        <span class="primary" th:text="${brand.getProductName()}"> <strong-->
-<!--                                th:text="${brand.getProductPrice()}"></strong></span>-->
-<!--                    </h3>-->
-<!--                    <h4 class="caption subtitle" th:text="${brand.getBrand()}"></h4>-->
-<!--                    <a class="caption button-radius" th:href="@{/brand(brand=${brand.getBrand()})}"><span-->
-<!--                            class="icon"></span>Shop now</a>-->
-<!--                </div>-->
-<!--            </li>-->
 
-<!--        </ul>-->
-<!--    </div>-->
-<!--    &lt;!&ndash; ./Slider &ndash;&gt;-->
-<!--</div> &lt;!&ndash; End slider area &ndash;&gt;-->
+        <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
 
-<div class="promo-area">
-    <div class="zigzag-bottom"></div>
-    <div class="container">
-        <div class="row">
-            <div class="col-md-3 col-sm-6">
-                <div class="single-promo promo1">
-                    <i class="fa fa-refresh"></i>
-                    <p>30 Days return</p>
-                </div>
-            </div>
-            <div class="col-md-3 col-sm-6">
-                <div class="single-promo promo2">
-                    <i class="fa fa-truck"></i>
-                    <p>Free shipping</p>
-                </div>
-            </div>
-            <div class="col-md-3 col-sm-6">
-                <div class="single-promo promo3">
-                    <i class="fa fa-lock"></i>
-                    <p>Secure payments</p>
-                </div>
-            </div>
-            <div class="col-md-3 col-sm-6">
-                <div class="single-promo promo4">
-                    <i class="fa fa-gift"></i>
-                    <p>New products</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</div> <!-- End promo area -->
-
-<div class="maincontent-area">
-    <div class="zigzag-bottom"></div>
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="latest-product">
-                    <h2 class="section-title">best sales</h2>
-                    <div class="product-carousel">
-                        <div class="single-product" th:each="product : ${allProduct}">
-                            <div class="product-f-image">
-                                <img th:src="${product.getProductImageLink()}" alt="">
-                                <div class="product-hover">
-                                    <a th:href="@{/cart/{productId}(productId=${product.getProductId()})}"
-                                       class="add-to-cart-link"><i class="fa fa-shopping-cart"></i> Add to cart</a>
-                                    <a th:href="@{/detail/{productId}(productId=${product.getProductId()})}"
-                                       class="view-details-link"><i class="fa fa-link"></i> See details</a>
-                                </div>
-                            </div>
-
-                            <h2><a th:href="@{/detail(productId=${product.getProductId()})}" th:text="${product.getProductName()}"></a></h2>
-
-                            <div class="product-carousel-price">
-                                <ins th:text="${product.getProductPrice()}"></ins>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div> <!-- End main content area -->
-
-<div class="product-widget-area">
-    <div class="zigzag-bottom"></div>
-    <div class="container">
-        <div class="row">
-            <div class="col-md-4">
-                <div class="single-product-widget">
-                    <h2 class="product-wid-title">Top Sellers</h2>
-                    <div class="single-wid-product " th:each="bestSeller : ${bestSeller}">
-                        <a th:href="@{/detail(productId=${bestSeller.getProductId()})}"><img
-                                th:src="${bestSeller.getProductImageLink()}" alt="" class="product-thumb"></a>
-                        <h2><a th:href="@{/detail(productId=${bestSeller.getProductId()})}"
-                               th:text="${bestSeller.getProductName()}"></a></h2>
-                        <div class="product-wid-rating" th:text="${bestSeller.getBrand()}">
-                        </div>
-                        <div class="product-wid-price">
-                            <ins th:text="${bestSeller.getProductPrice()}"></ins>
+            <div class="col mb-1 px-2" th:each=" product : ${products}">
+                <div class="card h-100">
+                    <!-- Product image-->
+                    <img class=" img-fluid rounded-3 p-2 card-img-top" th:src="${product.getProductImageLink()}"
+                         alt="..." src="./51YNSikL4BL._AC_SX569_.jpg">
+                    <!-- Product details-->
+                    <div class="card-body p-0">
+                        <div class="text-center mt-2">
+                            <!-- Product name-->
+                            <a th:href="@{/detail(productId=${product.getProductId()})}"
+                               class="text-decoration-none"><p
+                                    class="text-center mb-1" th:text="${product.getProductName()}"></p></a>
+                            <!-- Product price-->
+                            <p th:text="${product.getProductPrice() + ' 円'}" class="mb-1"></p>
+                            <p th:text="${product.getBrand()}"></p>
                         </div>
                     </div>
-
-                </div>
-            </div>
-            <!--                <div class="col-md-4">-->
-            <!--                    <div class="single-product-widget">-->
-            <!--                        <h2 class="product-wid-title">Recently Viewed</h2>-->
-            <!--                        <a href="#" class="wid-view-more">View All</a>-->
-            <!--                        <div class="single-wid-product">-->
-            <!--                            <a href="newProduct.html"><img src="img/product-thumb-4.jpg" alt="" class="product-thumb"></a>-->
-            <!--                            <h2><a href="newProduct.html">Sony playstation microsoft</a></h2>-->
-            <!--                            <div class="product-wid-rating">-->
-            <!--                                <i class="fa fa-star"></i>-->
-            <!--                                <i class="fa fa-star"></i>-->
-            <!--                                <i class="fa fa-star"></i>-->
-            <!--                                <i class="fa fa-star"></i>-->
-            <!--                                <i class="fa fa-star"></i>-->
-            <!--                            </div>-->
-            <!--                            <div class="product-wid-price">-->
-            <!--                                <ins>$400.00</ins> <del>$425.00</del>-->
-            <!--                            </div>                            -->
-            <!--                        </div>-->
-            <!--                        <div class="single-wid-product">-->
-            <!--                            <a href="newProduct.html"><img src="img/product-thumb-1.jpg" alt="" class="product-thumb"></a>-->
-            <!--                            <h2><a href="newProduct.html">Sony Smart Air Condtion</a></h2>-->
-            <!--                            <div class="product-wid-rating">-->
-            <!--                                <i class="fa fa-star"></i>-->
-            <!--                                <i class="fa fa-star"></i>-->
-            <!--                                <i class="fa fa-star"></i>-->
-            <!--                                <i class="fa fa-star"></i>-->
-            <!--                                <i class="fa fa-star"></i>-->
-            <!--                            </div>-->
-            <!--                            <div class="product-wid-price">-->
-            <!--                                <ins>$400.00</ins> <del>$425.00</del>-->
-            <!--                            </div>                            -->
-            <!--                        </div>-->
-            <!--                        <div class="single-wid-product">-->
-            <!--                            <a href="newProduct.html"><img src="img/product-thumb-2.jpg" alt="" class="product-thumb"></a>-->
-            <!--                            <h2><a href="newProduct.html">Samsung gallaxy note 4</a></h2>-->
-            <!--                            <div class="product-wid-rating">-->
-            <!--                                <i class="fa fa-star"></i>-->
-            <!--                                <i class="fa fa-star"></i>-->
-            <!--                                <i class="fa fa-star"></i>-->
-            <!--                                <i class="fa fa-star"></i>-->
-            <!--                                <i class="fa fa-star"></i>-->
-            <!--                            </div>-->
-            <!--                            <div class="product-wid-price">-->
-            <!--                                <ins>$400.00</ins> <del>$425.00</del>-->
-            <!--                            </div>                            -->
-            <!--                        </div>-->
-            <!--                    </div>-->
-            <!--                </div>-->
-            <!--                <div class="col-md-4">-->
-            <!--                    <div class="single-product-widget">-->
-            <!--                        <h2 class="product-wid-title">Top New</h2>-->
-            <!--                        <a href="#" class="wid-view-more">View All</a>-->
-            <!--                        <div class="single-wid-product">-->
-            <!--                            <a href="newProduct.html"><img src="img/product-thumb-3.jpg" alt="" class="product-thumb"></a>-->
-            <!--                            <h2><a href="newProduct.html">Apple new i phone 6</a></h2>-->
-            <!--                            <div class="product-wid-rating">-->
-            <!--                                <i class="fa fa-star"></i>-->
-            <!--                                <i class="fa fa-star"></i>-->
-            <!--                                <i class="fa fa-star"></i>-->
-            <!--                                <i class="fa fa-star"></i>-->
-            <!--                                <i class="fa fa-star"></i>-->
-            <!--                            </div>-->
-            <!--                            <div class="product-wid-price">-->
-            <!--                                <ins>$400.00</ins> <del>$425.00</del>-->
-            <!--                            </div>                            -->
-            <!--                        </div>-->
-            <!--                        <div class="single-wid-product">-->
-            <!--                            <a href="newProduct.html"><img src="img/product-thumb-4.jpg" alt="" class="product-thumb"></a>-->
-            <!--                            <h2><a href="newProduct.html">Samsung gallaxy note 4</a></h2>-->
-            <!--                            <div class="product-wid-rating">-->
-            <!--                                <i class="fa fa-star"></i>-->
-            <!--                                <i class="fa fa-star"></i>-->
-            <!--                                <i class="fa fa-star"></i>-->
-            <!--                                <i class="fa fa-star"></i>-->
-            <!--                                <i class="fa fa-star"></i>-->
-            <!--                            </div>-->
-            <!--                            <div class="product-wid-price">-->
-            <!--                                <ins>$400.00</ins> <del>$425.00</del>-->
-            <!--                            </div>                            -->
-            <!--                        </div>-->
-            <!--                        <div class="single-wid-product">-->
-            <!--                            <a href="newProduct.html"><img src="img/product-thumb-1.jpg" alt="" class="product-thumb"></a>-->
-            <!--                            <h2><a href="newProduct.html">Sony playstation microsoft</a></h2>-->
-            <!--                            <div class="product-wid-rating">-->
-            <!--                                <i class="fa fa-star"></i>-->
-            <!--                                <i class="fa fa-star"></i>-->
-            <!--                                <i class="fa fa-star"></i>-->
-            <!--                                <i class="fa fa-star"></i>-->
-            <!--                                <i class="fa fa-star"></i>-->
-            <!--                            </div>-->
-            <!--                            <div class="product-wid-price">-->
-            <!--                                <ins>$400.00</ins> <del>$425.00</del>-->
-            <!--                            </div>                            -->
-            <!--                        </div>-->
-            <!--                    </div>-->
-            <!--                </div>-->
-        </div>
-    </div>
-</div> <!-- End product widget area -->
-
-<div class="footer-top-area">
-    <div class="zigzag-bottom"></div>
-    <div class="container">
-        <div class="row">
-            <div class="col-md-3 col-sm-6">
-                <div class="footer-about-us">
-                    <h2>u<span>Stora</span></h2>
-
-                    <div class="footer-social">
-                        <a href="https://www.facebook.com/profile.php?id=100022777150394" target="_blank"><i class="fa fa-facebook"></i></a>
-                        <a href="#" target="_blank"><i class="fa fa-twitter"></i></a>
-                        <a href="https://www.youtube.com/@MixiGaming89" target="_blank"><i class="fa fa-youtube"></i></a>
-                        <a href="#" target="_blank"><i class="fa fa-linkedin"></i></a>
+                    <!-- Product actions-->
+                    <div class="card-footer border-top-0 bg-transparent d-flex justify-content-between pt-0">
+                        <input class="form-control text-center me-3" id="inputQuantity" type="num" required
+                               style="max-width: 3rem" min="0"/>
+                        <div class="">
+                            <button th:data-id="${product.getProductId()}"
+                                    class="btn btn-outline-dark mt-auto p-2 btnOrder"
+                                    type="button">Add To Cart
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <div class="col-md-3 col-sm-6">
-                <div class="footer-menu">
-                    <h2 class="footer-wid-title">User Navigation </h2>
-                    <ul>
-                        <li><a href="#">My account</a></li>
-                        <li><a href="#">Order history</a></li>
-                        <li><a href="#">Wishlist</a></li>
-                        <li><a href="#">Vendor contact</a></li>
-                        <li><a href="#">Front page</a></li>
-                    </ul>
-                </div>
-            </div>
 
-            <div class="col-md-3 col-sm-6">
-                <div class="footer-menu">
-                    <h2 class="footer-wid-title">Categories</h2>
-                    <ul>
-                        <li th:each="category : ${categorys}">
-                            <a th:href="@{/category(categoryId=${category.getCategoryId()})}" th:text="${category.getCategoryName()}"></a>
-                        </li>
+            <div class="">
 
-                    </ul>
-                </div>
-            </div>
+                <div class=" d-flex w-100">
+                    <nav aria-label="Page navigation example d-flex justify-content-center">
 
-            <div class="col-md-3 col-sm-6">
-                <div class="footer-newsletter">
-                    <h2 class="footer-wid-title">Newsletter</h2>
-                    <p>Sign up to our newsletter and get exclusive deals you wont find anywhere else straight to your
-                        inbox!</p>
-                    <div class="newsletter-form">
-                        <form action="#">
-                            <input type="email" placeholder="Type your email">
-                            <input type="submit" value="Subscribe">
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div> <!-- End footer top area -->
+                        <ul class="pagination  d-flex justify-content-center">
+                            <li th:if="${productPage.totalPages > 0}" th:each="pageNumber : ${pageNumbers}"
+                                th:switch="${pathvariable}">
+                                <a th:case="'categoryId'" th:each="category : ${categorys}"
+                                   th:href="@{/category(categoryId=${category.categoryId},size=${productPage.size}, page=${pageNumber})}"
 
-<div class="footer-bottom-area">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-8">
-                <div class="copyright">
-                    <p>&copy; 2015 uCommerce. All Rights Reserved. <a href="https://www.facebook.com/profile.php?id=100022777150394"
-                                                                      target="_blank">DINH HOA</a></p>
-                </div>
-            </div>
+                                   th:class="${pageNumber== productPage.number + 1} ? active ">
+                                    <button class="btn btn-outline-dark mt-4 m-3 " th:text="${pageNumber}"></button>
+                                </a>
 
-            <div class="col-md-4">
-                <div class="footer-card-icon">
-                    <i class="fa fa-cc-discover"></i>
-                    <i class="fa fa-cc-mastercard"></i>
-                    <i class="fa fa-cc-paypal"></i>
-                    <i class="fa fa-cc-visa"></i>
+                                <a th:case="'products'"
+                                   th:href="@{/(size=${productPage.size}, page=${pageNumber})}"
+
+                                   th:class="${pageNumber== productPage.number + 1} ? active ">
+                                    <button class="btn btn-outline-dark mt-4 m-3" th:text="${pageNumber}"></button>
+                                </a>
+
+                                <a th:case="'brand'"
+                                   th:each="brand : ${brands}"
+                                   th:href="@{/brand/{brand}(brand=${brand} , size=${productPage.size}, page=${pageNumber})}"
+
+                                   th:class="${pageNumber== productPage.number + 1} ? active ">
+                                    <button class="btn btn-outline-dark mt-4 m-3" th:text="${pageNumber}"></button>
+                                </a>
+                                <a th:case="'price'"
+                                   th:href="@{/price(min=0,max=30000 , page=${pageNumber})}"
+
+                                   th:class="${pageNumber== productPage.number + 1} ? active ">
+                                    <button class="btn btn-outline-dark mt-4 m-3" th:text="${pageNumber}"></button>
+                                </a>
+                            </li>
+                        </ul>
+
+                    </nav>
                 </div>
             </div>
         </div>
+
+
     </div>
-</div> <!-- End footer bottom area -->
+</section>
+<script>
+    $(document).ready(function () {
+        $(".btnOrder").click(function () {
+            var productId = $(this).attr("data-id");
+            var quantityOrder = $("#inputQuantity").val();
+            window.location = "addOrder?productId=" + productId + "&quantity=" + quantityOrder
+        });
+    });
+</script>
 
-<!-- Latest jQuery form server -->
-<script src="https://code.jquery.com/jquery.min.js"></script>
 
-<!-- Bootstrap JS form CDN -->
-<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<!-- Footer-->
+<footer class="py-5 bg-dark">
+    <div class="container"><p class="m-0 text-center text-white">Copyright &copy; Your Website 2022</p></div>
+</footer>
+<!-- Bootstrap core JS-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 
-<!-- jQuery sticky menu -->
-<script src="js/owl.carousel.min.js"></script>
-<script src="js/jquery.sticky.js"></script>
 
-<!-- jQuery easing -->
-<script src="js/jquery.easing.1.3.min.js"></script>
-
-<!-- Main Script -->
-<script src="js/main.js"></script>
-
-<!-- Slider -->
-<script type="text/javascript" src="js/bxslider.min.js"></script>
-<script type="text/javascript" src="js/script.slider.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"
-        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
-        crossorigin="anonymous"></script>
+<!-- Core theme JS-->
+<script src="../../js1/scripts.js"></script>
 </body>
 </html>

@@ -1736,3 +1736,7 @@ li {
     display: flex;
     justify-content: center;
 }
+
+.d-flex.align-items-end.icon-style {
+    margin-bottom: 13px;
+}

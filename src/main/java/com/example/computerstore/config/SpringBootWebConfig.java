@@ -18,6 +18,9 @@ public class SpringBootWebConfig implements WebMvcConfigurer {
         registry.addResourceHandler("/css/**").addResourceLocations("classpath:/static/css/");
         registry.addResourceHandler("/img/**").addResourceLocations("classpath:/static/img/");
         registry.addResourceHandler("/fonts/**").addResourceLocations("classpath:/static/fonts/");
+        registry.addResourceHandler("/js1/**").addResourceLocations("classpath:/static/js1/");
+        registry.addResourceHandler("/css1/**").addResourceLocations("classpath:/static/css1/");
+        registry.addResourceHandler("/asset/**").addResourceLocations("classpath:/static/asset/");
         registry.addResourceHandler("/public/**").addResourceLocations("file://" + staticResource).setCachePeriod(5);
     }
 }

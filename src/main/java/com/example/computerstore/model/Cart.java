@@ -1,8 +1,7 @@
 package com.example.computerstore.model;
 
-import jakarta.persistence.*;
 
-import java.util.List;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "cart")
@@ -14,16 +13,9 @@ public class Cart {
 
     @Column(name = "price")
     private int price;
-   @ManyToOne
-   @JoinColumn(name = "orderId")
-    private Order order;
 
 
-    public Cart(int cartId, int price, Order order) {
-        this.cartId = cartId;
-        this.price = price;
-        this.order = order;
-    }
+
 
     public int getPrice() {
         return price;
@@ -45,11 +37,4 @@ public class Cart {
         this.cartId = cartId;
     }
 
-    public Order getOrder() {
-        return order;
-    }
-
-    public void setOrder(Order order) {
-        this.order = order;
-    }
 }

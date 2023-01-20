@@ -42,40 +42,12 @@
         <div class="row">
             <div class="col-md-8">
                 <div class="user-menu">
-                    <ul>
-                        <li><a href="#"><i class="fa fa-user"></i> My Account</a></li>
+                    <ul class="d-flex flex-row ">
+                        <li><a th:href="@{/userDetail(userName=${user.getEmail()})}" ><i class="fa fa-user"></i> My Account</a></li>
                         <li><a href="#"><i class="fa fa-heart"></i> Wishlist</a></li>
-                        <li><a href="cart.html"><i class="fa fa-user"></i> My Cart</a></li>
-                        <li><a href="checkout.html"><i class="fa fa-user"></i> Checkout</a></li>
-                        <li><a href="#"><i class="fa fa-user"></i> Login</a></li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="col-md-4">
-                <div class="header-right">
-                    <ul class="list-unstyled list-inline">
-                        <li class="dropdown dropdown-small">
-                            <a data-toggle="dropdown" data-hover="dropdown" class="dropdown-toggle" href="#"><span
-                                    class="key">currency :</span><span class="value">USD </span><b
-                                    class="caret"></b></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="#">USD</a></li>
-                                <li><a href="#">INR</a></li>
-                                <li><a href="#">GBP</a></li>
-                            </ul>
-                        </li>
-
-                        <li class="dropdown dropdown-small">
-                            <a data-toggle="dropdown" data-hover="dropdown" class="dropdown-toggle" href="#"><span
-                                    class="key">language :</span><span class="value">English </span><b
-                                    class="caret"></b></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="#">English</a></li>
-                                <li><a href="#">French</a></li>
-                                <li><a href="#">German</a></li>
-                            </ul>
-                        </li>
+                        <li><a th:href="@{/cart}"><i class="fa fa-user"></i> My Cart</a></li>
+                        <li><a th:href="@{/checkout}"><i class="fa fa-user"></i> Checkout</a></li>
+                        <li><a th:href="@{/login}"><i class="fa fa-user"></i> Login</a></li>
                     </ul>
                 </div>
             </div>
@@ -88,7 +60,7 @@
         <div class="row">
             <div class="col-sm-6">
                 <div class="logo">
-                    <h1><a th:href="@{/}"><img src="../../img/logo.png"></a></h1>
+                    <h1><a th:href="@{/static}"><img src="../../img/logo.png"></a></h1>
                 </div>
             </div>
 
@@ -116,8 +88,8 @@
             <div class="navbar-collapse collapse">
                 <div class="navbar-collapse collapse nav-header">
                     <ul class="nav navbar-nav navbar-menu ">
-                        <li><a th:href="@{/}">Home</a></li>
-                        <li><a th:href="@{/products}">Product</a></li>
+                        <li><a th:href="@{/static}">Home</a></li>
+                        <li><a th:href="@{/templates/product}">Product</a></li>
                         <li><a th:href="@{/cart}">Cart</a></li>
                         <li><a th:href="@{/checkout}">Checkout</a></li>
                         <li><a th:href="@{/newProduct}"> Add New Product</a></li>
@@ -150,7 +122,7 @@
                 <div class="single-sidebar">
                     <h2 class="sidebar-title">Search Products</h2>
                     <form action="">
-                        <input type="text" placeholder="Search products...">
+                        <input type="text" placeholder="Search product...">
                         <input type="submit" value="Search">
                     </form>
                 </div>
@@ -159,7 +131,7 @@
                     <h2 class="sidebar-title">Products</h2>
                     <div class="thubmnail-recent">
                         <img src="img/product-thumb-1.jpg" class="recent-thumb" alt="">
-                        <h2><a href="newProduct.html">Sony Smart TV - 2015</a></h2>
+                        <h2><a href="ProductDetail.html">Sony Smart TV - 2015</a></h2>
                         <div class="product-sidebar-price">
                             <ins>$700.00</ins>
                             <del>$100.00</del>
@@ -167,7 +139,7 @@
                     </div>
                     <div class="thubmnail-recent">
                         <img src="img/product-thumb-1.jpg" class="recent-thumb" alt="">
-                        <h2><a href="newProduct.html">Sony Smart TV - 2015</a></h2>
+                        <h2><a href="ProductDetail.html">Sony Smart TV - 2015</a></h2>
                         <div class="product-sidebar-price">
                             <ins>$700.00</ins>
                             <del>$100.00</del>
@@ -175,7 +147,7 @@
                     </div>
                     <div class="thubmnail-recent">
                         <img src="img/product-thumb-1.jpg" class="recent-thumb" alt="">
-                        <h2><a href="newProduct.html">Sony Smart TV - 2015</a></h2>
+                        <h2><a href="ProductDetail.html">Sony Smart TV - 2015</a></h2>
                         <div class="product-sidebar-price">
                             <ins>$700.00</ins>
                             <del>$100.00</del>
@@ -183,7 +155,7 @@
                     </div>
                     <div class="thubmnail-recent">
                         <img src="img/product-thumb-1.jpg" class="recent-thumb" alt="">
-                        <h2><a href="newProduct.html">Sony Smart TV - 2015</a></h2>
+                        <h2><a href="ProductDetail.html">Sony Smart TV - 2015</a></h2>
                         <div class="product-sidebar-price">
                             <ins>$700.00</ins>
                             <del>$100.00</del>
@@ -194,11 +166,11 @@
                 <div class="single-sidebar">
                     <h2 class="sidebar-title">Recent Posts</h2>
                     <ul>
-                        <li><a href="newProduct.html">Sony Smart TV - 2015</a></li>
-                        <li><a href="newProduct.html">Sony Smart TV - 2015</a></li>
-                        <li><a href="newProduct.html">Sony Smart TV - 2015</a></li>
-                        <li><a href="newProduct.html">Sony Smart TV - 2015</a></li>
-                        <li><a href="newProduct.html">Sony Smart TV - 2015</a></li>
+                        <li><a href="ProductDetail.html">Sony Smart TV - 2015</a></li>
+                        <li><a href="ProductDetail.html">Sony Smart TV - 2015</a></li>
+                        <li><a href="ProductDetail.html">Sony Smart TV - 2015</a></li>
+                        <li><a href="ProductDetail.html">Sony Smart TV - 2015</a></li>
+                        <li><a href="ProductDetail.html">Sony Smart TV - 2015</a></li>
                     </ul>
                 </div>
             </div>
