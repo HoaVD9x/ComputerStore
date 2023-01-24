@@ -1,6 +1,5 @@
 package com.example.computerstore.controller;
 
-import com.example.computerstore.Payload.OrderPayLoad;
 import com.example.computerstore.dao.CategoryRepository;
 
 import com.example.computerstore.model.Cart;
@@ -12,8 +11,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.List;
-import java.util.stream.Collectors;
-
 
 
 @Controller
@@ -34,6 +31,6 @@ public class CartController {
 
         model.addAttribute("user", new User());
         model.addAttribute("categorys", categoryRepository.findAll());
-        return "product/cart";
+        return "product/productCart";
     }
 }

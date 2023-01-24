@@ -2,10 +2,8 @@ package com.example.computerstore.controller;
 
 import com.example.computerstore.Payload.LoginPayload;
 import com.example.computerstore.Payload.RegisterPayload;
-import com.example.computerstore.model.Role;
 import com.example.computerstore.model.User;
 import com.example.computerstore.service.LoginService;
-import com.example.computerstore.service.ProductService;
 import com.example.computerstore.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -53,11 +51,13 @@ public class LoginController {
                              @RequestParam("userName") String userName) {
         Optional<User> user = userService.getUserByUserName(userName);
         if (user.isPresent()) {
-            model.addAttribute("user", user.get());
-            return "User/UserDetail";
+            User user1 = user.get();
+            model.addAttribute("user", user1);
+            return "User/userDetail";
+        } else {
+            model.addAttribute("message", "user is not present");
+            return "redirect:" + request.getHeader("Referer");
         }
-        model.addAttribute("message", "user is not present");
-        return "redirect:" + request.getHeader("Referer");
     }
 
     @GetMapping("logout")
@@ -75,6 +75,7 @@ public class LoginController {
             User user = userOptional.get();
             user.setActive(false);
             userService.upDateUser(user);
+            httpSession.setAttribute("user", null);
             return "LoginRegister/login";
         }
         model.addAttribute("message", "user is not present");

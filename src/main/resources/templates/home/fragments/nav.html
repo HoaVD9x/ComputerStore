@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{home/fragments/nav:: nav}">
+<head>
+</head>
+<body>
+<div th:fragment="nav">
+    <div class="col m-4">
+
+        <div class="d-flex justify-content-between"><h5> Filter</h5>
+            <div class="d-flex align-items-center">
+                <i class="fa fa-filter " aria-hidden="true"></i>
+            </div>
+        </div>
+        <div class="d-flex justify-content-center ">
+            <div class="dropdown mx-2">
+                <button type="button" class="btn btn-light dropdown-toggle text-center w-100" data-bs-toggle="dropdown">
+                    <!-- name -->Category
+                </button>
+                <ul class="dropdown-menu">
+                    <li th:each="categorty : ${ categorys}"><a class="dropdown-item text-center"
+                                                               th:href="@{/category(categoryId=${categorty.getCategoryId()})}"
+                                                               th:text="${categorty.getCategoryName()}"></a></li>
+
+                </ul>
+            </div>
+            <div class="dropdown mx-2">
+                <button type="button" class="btn btn-light dropdown-toggle text-center w-100" data-bs-toggle="dropdown">
+                    <!-- name -->Brand
+                </button>
+                <ul class="dropdown-menu">
+                    <li th:each="brand : ${ brands}"><a class="dropdown-item text-center"
+                                                        th:href="@{/brand/{brand}(brand=${brand})}"
+                                                        th:text="${brand}"></a></li>
+
+                </ul>
+            </div>
+            <div class="dropdown mx-2">
+                <button type="button" class="btn btn-light dropdown-toggle text-center w-100" data-bs-toggle="dropdown">
+                    <!-- name -->Price
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a th:href="@{/price(min=0, max=30000)}">
+                        <button type="button" class="btn btn-light w-100 text-center">0 円 ~ 30000 円</button>
+                    </a></li>
+                    <li><a th:href="@{/price(min=30000, max=60000)}">
+                        <button type="button" class="btn btn-light w-100 text-center">30000 円 ~ 60000 円</button>
+                    </a></li>
+                    <li><a th:href="@{/price(min=60000, max=90000)}">
+                        <button type="button" class="btn btn-light w-100 text-center">60000 円 ~ 90000 円</button>
+                    </a></li>
+                    <li><a th:href="@{/minPrice(min=90000)}">
+                        <button type="button" class="btn btn-light w-100 text-center"> 90000 円 ~</button>
+                    </a></li>
+
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -30,7 +30,7 @@ public class OrderPayloadServiceImpl implements OrderPayloadService {
         } else {
             orderPayLoad.setProduct(product.get());
             orderPayLoad.setQuantityOrder(quantity);
-            orderPayLoad.setTotalPrice(product.get().getProductPrice());
+            orderPayLoad.setTotalPrice(product.get().getProductPrice() * orderPayLoad.getQuantityOrder());
         }
         orderDetail.put(id, orderPayLoad);
         return orderDetail;
