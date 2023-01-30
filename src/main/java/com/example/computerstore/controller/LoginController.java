@@ -55,8 +55,9 @@ public class LoginController {
             model.addAttribute("user", user1);
             return "User/userDetail";
         } else {
-            model.addAttribute("message", "user is not present");
-            return "redirect:" + request.getHeader("Referer");
+            model.addAttribute("message", "register  please !");
+            model.addAttribute("registerpayload", new RegisterPayload());
+            return "LoginRegister/register";
         }
     }
 
@@ -80,6 +81,14 @@ public class LoginController {
         }
         model.addAttribute("message", "user is not present");
         return "redirect:" + request.getHeader("Referer");
+    }
+
+    @GetMapping("guest")
+    public String guestLogin(Model model,
+                             HttpSession httpSession) {
+        User user = new User();
+        httpSession.setAttribute("user", user);
+        return "redirect:/";
     }
 
     @PostMapping("login")

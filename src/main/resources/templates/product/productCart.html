@@ -130,23 +130,27 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>
+                                    <td class="col-3">
                                         <p class="mb-2 text-center">Total Quantity</p>
                                     </td>
-                                    <td>
+                                    <td class="col-3">
                                         <p class="mb-2 text-center" th:text="${session.totalQuantityOrderSession}"></p>
                                     </td>
-                                    <td>
+                                    <td class="col-3">
                                         <span class="text-center">total Price</span>
                                     </td>
-                                    <td>
+                                    <td class="col-3">
                                         <span class="text-center" th:text="${session.totalPriceSession + '　円'}"></span>
                                     </td>
+
 
                                 </tr>
 
                                 </tbody>
                             </table>
+                            <div class="text-center">
+                                <a th:href="@{/checkout}" class="btn btn-dark">Payment</a>
+                            </div>
                         </div>
 
 

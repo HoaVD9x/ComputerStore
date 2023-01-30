@@ -20,7 +20,7 @@
                 </button>
                 <ul class="dropdown-menu">
                     <li th:each="categorty : ${ categorys}"><a class="dropdown-item text-center"
-                                                               th:href="@{/category(categoryId=${categorty.getCategoryId()})}"
+                                                               th:href="@{/category(categoryName=${categorty.getCategoryName()})}"
                                                                th:text="${categorty.getCategoryName()}"></a></li>
 
                 </ul>
@@ -42,16 +42,16 @@
                 </button>
                 <ul class="dropdown-menu">
                     <li><a th:href="@{/price(min=0, max=30000)}">
-                        <button type="button" class="btn btn-light w-100 text-center">0 円 ~ 30000 円</button>
+                        <button type="button" class="btn btn-light w-100 text-center p-1">0 円 ~ 30000 円</button>
                     </a></li>
                     <li><a th:href="@{/price(min=30000, max=60000)}">
-                        <button type="button" class="btn btn-light w-100 text-center">30000 円 ~ 60000 円</button>
+                        <button type="button" class="btn btn-light w-100 text-center p-1">30000 円 ~ 60000 円</button>
                     </a></li>
                     <li><a th:href="@{/price(min=60000, max=90000)}">
-                        <button type="button" class="btn btn-light w-100 text-center">60000 円 ~ 90000 円</button>
+                        <button type="button" class="btn btn-light w-100 text-center p-1">60000 円 ~ 90000 円</button>
                     </a></li>
                     <li><a th:href="@{/minPrice(min=90000)}">
-                        <button type="button" class="btn btn-light w-100 text-center"> 90000 円 ~</button>
+                        <button type="button" class="btn btn-light w-100 text-center p-1"> 90000 円 ~</button>
                     </a></li>
 
                 </ul>

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+    <title>Dashboard - SB Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet"/>
+    <link href="../../css1/styles1.css" rel="stylesheet"/>
+    <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
+    <link rel="icon" type="image/x-icon" href="../../asset/favicon.ico"/>
+</head>
+<body class="sb-nav-fixed">
+
+  <header class="row">
+    <div th:replace="Admin/AdminHome/fragments/header:: header"></div>
+  </header>
+
+<div id="layoutSidenav">
+    <div th:replace="Admin/AdminHome/fragments/nav :: nav"></div>
+    <div id="layoutSidenav_content">
+        <main>
+            <section class="vh-100">
+                <div class="container h-100">
+                    <div class="row d-flex justify-content-center align-items-center h-100">
+                        <h2 class="text-center" th:text="${message}"></h2>
+                        <div class="col-xl-9">
+                            <div class="card" style="border-radius: 15px;">
+                                <form th:action="@{/admin/user/save}" enctype="multipart/form-data" th:object="${user}" method="post">
+                                    <div class="card-body">
+                                        <h1 class="text-center"> INFORMATION</h1>
+                                        <div>
+                                            <input type="hidden" th:value="${user.getUserId()}" th:field="${user.userId}">
+                                        </div>
+                                        <div class="row align-items-center mb-2 mb-2">
+                                            <div class="col-md-2">
+                                                <h6 class="">User Name</h6>
+                                            </div>
+                                            <div class="col-md-9 ">
+                                                <input type="text" class="form-control form-control-lg" th:value="${user.getUserName()}" th:field="${user.userName}" required/>
+                                            </div>
+                                        </div>
+                                        <div class="row align-items-center mb-2">
+                                            <div class="col-md-2">
+                                                <h6 class="">First Name</h6>
+                                            </div>
+                                            <div class="col-md-9 ">
+                                                <input type="text" class="form-control form-control-lg" th:value="${user.getFirstName()}" th:field="${user.firstName}" required/>
+                                            </div>
+                                        </div>
+                                        <div class="row align-items-center mb-2">
+                                            <div class="col-md-2">
+                                                <h6 class="">Last Name</h6>
+                                            </div>
+                                            <div class="col-md-9 ">
+                                                <input type="text" class="form-control form-control-lg" th:value="${user.getLastName()}" th:field="${user.lastName}" required/>
+                                            </div>
+                                        </div>
+                                        <div class="row align-items-center mb-2">
+                                            <div class="col-md-2">
+                                                <h6>Email address</h6>
+                                            </div>
+                                            <div class="col-md-9">
+                                                <input type="email" class="form-control form-control-lg" th:value="${user.getEmail()} " th:field="${user.email}" required/>
+                                            </div>
+                                        </div>
+                                        <div class="row align-items-center mb-2">
+                                            <div class="col-md-2">
+                                                <h6>Phone</h6>
+                                            </div>
+                                            <div class="col-md-9">
+                                                <input type="text" class="form-control form-control-lg" th:value="${user.getPhone()}" th:field="${user.phone}" required/>
+                                            </div>
+                                        </div>
+                                        <div class="row align-items-center mb-2">
+                                            <div class="col-md-2">
+                                                <h6>Option</h6>
+                                            </div>
+                                            <div class="col-md-9">
+                                                <select class="form-select" aria-label="Default select example" th:field="${user.role}" >
+                                                    <option th:each="role : ${roles}" th:value="${role.getRoleId()}"  th:text="${role.getRoleName()}" ></option>
+
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="d-flex flex-row justify-content-around">
+                                        <div class="px-5 py-4" th:if="${user.role != null}">
+                                            <a th:href="@{/admin/user/newUser}" >
+                                                <button type="button" class="btn btn-primary btn-lg">NEW USER</button>
+                                            </a>
+                                        </div>
+
+                                        <div class="px-5 py-4"><a>
+                                            <button type="submit" class="btn btn-primary btn-lg">SAVE USER</button>
+                                        </a>
+                                        </div>
+                                        <div class="px-5 py-4" th:if="${user.getRole() != null}">
+                                            <a th:href="@{/admin/user/delete(userId=${user.getUserId()})}">
+                                                <button type="submit" class="btn btn-primary btn-lg">DELETE</button>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+    </section>
+        </main>
+        <footer class="py-4 bg-light mt-auto">
+            <div class="container-fluid px-4">
+                <div class="d-flex align-items-center justify-content-between small">
+                    <div class="text-muted">Copyright &copy; Your Website 2022</div>
+                    <div>
+                        <a href="#">Privacy Policy</a>
+                        &middot;
+                        <a href="#">Terms &amp; Conditions</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        crossorigin="anonymous"></script>
+<script src="../../js1/scripts.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
+<script src="../../asset/demo/chart-area-demo.js"></script>
+<script src="../../asset/demo/chart-bar-demo.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
+<script src="../../js1/datatables-simple-demo.js"></script>
+</body>
+</html>

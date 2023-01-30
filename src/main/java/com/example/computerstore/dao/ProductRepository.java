@@ -11,7 +11,7 @@ import java.util.Optional;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Integer> {
-    Page<Product> findByCategory_CategoryIdAndActiveTrue(int categoryId, Pageable pageable);
+    Page<Product> findProductByCategory_CategoryNameAndActiveTrue(String categoryName, Pageable pageable);
 
 
     Page<Product> findProductsByBrandAndActiveTrue(String Brand, Pageable pageable);
@@ -28,4 +28,6 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 
 
     Optional<Product> getProductsByProductId(int productId);
+
+    Page<Product> findProductByProductNameIsContainingAndActiveTrue(String keyWord,Pageable pageable);
 }

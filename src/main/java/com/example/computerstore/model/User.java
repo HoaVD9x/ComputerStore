@@ -4,7 +4,7 @@ package com.example.computerstore.model;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "users")
@@ -41,9 +41,10 @@ public class User implements Serializable {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Set<Order> orders;
 
-    @ManyToOne
-    @JoinColumn(name = "roleId")
-    private Role role;
+    @ManyToMany
+    @JoinTable(name = "userRole", joinColumns = @JoinColumn(name = "userId"),
+    inverseJoinColumns = @JoinColumn(name = "roleId"))
+    private List<Role> roles = new ArrayList<>();
 
 
     public User(int userId, String email, String password, String firstName, String lastName, String userName, String phone) {
@@ -139,11 +140,11 @@ public class User implements Serializable {
         this.status = status;
     }
 
-    public Role getRole() {
-        return role;
+    public List<Role> getRoles() {
+        return roles;
     }
 
-    public void setRole(Role role) {
-        this.role = role;
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
     }
 }

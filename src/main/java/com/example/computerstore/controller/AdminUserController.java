@@ -31,7 +31,7 @@ public class AdminUserController {
         List<User> users = userService.getAll();
         model.addAttribute("users", users);
         model.addAttribute("message", "");
-        return "Admin/User/listUser";
+        return "Admin/User/listUser1";
     }
 
     @GetMapping("newUser")
@@ -39,15 +39,10 @@ public class AdminUserController {
         List<Role> roles = roleRepository.findAll();
         model.addAttribute("roles", roles);
         model.addAttribute("user", new RegisterPayload());
-        return "Admin/User/UserDetail";
+        return "Admin/User/userDetail1";
     }
 
-    @GetMapping("login")
-    public String AdminLogin(Model model) {
-        model.addAttribute("login", new LoginPayload());
-        model.addAttribute("message","");
-        return "Admin/User/AdminLogin";
-    }
+
 
 
     @GetMapping("detail")
@@ -63,13 +58,15 @@ public class AdminUserController {
            model.addAttribute("user", user);
             List<Role> roles = roleRepository.findAll();
             model.addAttribute("roles", roles);
-            return "Admin/User/UserDetail";
+            return "Admin/User/userDetail1";
 
         } else {
             model.addAttribute("message", "user is not present");
             return "redirect:/admin/user/";
         }
     }
+
+
 
 
     @GetMapping("delete")
@@ -97,23 +94,6 @@ public class AdminUserController {
     }
 
 
-    @PostMapping("login")
-    public String postAdminLogin(Model model,
-                                 @ModelAttribute LoginPayload loginPayload,
-                                 HttpSession httpSession) {
-        Optional<User> adminLogin = userService.getUserByUserName(loginPayload.getEmail());
-        User user = adminLogin.get();
-        if (adminLogin.isPresent() && user.getRole().getRoleId()== 2) {
-            if (user.getRole().getRoleId()==2)
-            model.addAttribute("message", "hello " + loginPayload.getEmail() + " !");
-            httpSession.setAttribute("user", user);
-
-            return "redirect:/admin/product/";
-        } else {
-            model.addAttribute("message", "admin is not Present");
-            return "redirect:/admin/user/login";
-        }
-    }
 
 
 

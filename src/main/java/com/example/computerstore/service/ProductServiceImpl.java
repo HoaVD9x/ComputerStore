@@ -1,6 +1,7 @@
 package com.example.computerstore.service;
 
 import com.example.computerstore.Payload.ProductPayload;
+import com.example.computerstore.dao.CategoryRepository;
 import com.example.computerstore.dao.ProductRepository;
 import com.example.computerstore.model.Product;
 
@@ -31,6 +32,8 @@ public class ProductServiceImpl implements ProductService{
     private String staticResource;
     @Autowired
     private ProductRepository productsRepository;
+    @Autowired
+    private CategoryRepository categoryRepository;
 
     @Override
     public void save(ProductPayload productPayload, HttpServletRequest request) throws IOException {
@@ -68,8 +71,8 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public Page<Product> getProductByCategoryId(int categoryId, Pageable pageable) {
-        return  productsRepository.findByCategory_CategoryIdAndActiveTrue(categoryId, pageable);
+    public Page<Product> getProductByCategoryName(String categoryName, Pageable pageable) {
+        return  productsRepository.findProductByCategory_CategoryNameAndActiveTrue(categoryName, pageable);
     }
 
     @Override
@@ -105,6 +108,11 @@ public class ProductServiceImpl implements ProductService{
     @Override
     public List<Product> findAllProductByBrand(String brand) {
         return productsRepository.getProductsByBrand(brand);
+    }
+
+    @Override
+    public Page<Product> getProductByKeyWord(String keyWord, Pageable pageable) {
+        return productsRepository.findProductByProductNameIsContainingAndActiveTrue(keyWord, pageable);
     }
 
 

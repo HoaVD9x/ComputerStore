@@ -62,11 +62,11 @@ public class AdminProductController {
         model.addAttribute("products", productsPage);
 
 
-        return "Admin/User/index";
+        return "Admin/product/ListProduct";
     }
     @GetMapping("newProduct")
     public ModelAndView newProduct(ModelMap modelMap) {
-        modelMap.addAttribute("categorys", categoryRepository.findAll());
+        modelMap.addAttribute("categorys", categoryRepository.findAllByActiveTrue());
         modelMap.addAttribute("message", "Add New Product !");
         modelMap.addAttribute("payload", new ProductPayload());
         modelMap.addAttribute("products", new Product());
@@ -82,13 +82,13 @@ public class AdminProductController {
             model.addAttribute("products", product);
 
             model.addAttribute("message", "edit Product : " + product.getProductName());
-            model.addAttribute("categorys", categoryRepository.findAll());
+            model.addAttribute("categorys", categoryRepository.findAllByActiveTrue());
             model.addAttribute("payload", new ProductPayload());
             return "Admin/product/NewProduct";
 
         }
         model.addAttribute("message", "Product is not present !");
-        return "Admin/User/index";
+        return "Admin/product/NewProduct";
     }
     @GetMapping("delete")
     public String deleteProduct(@RequestParam("productId") int productId,
@@ -107,6 +107,8 @@ public class AdminProductController {
             return "redirect:/admin/product/";
         }
     }
+
+
 
 
     @PostMapping("saveProduct")

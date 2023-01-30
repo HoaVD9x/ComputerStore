@@ -84,7 +84,7 @@ public class UserServiceIplm implements UserService {
         user1.setPassword(user.getPassword());
         user1.setEmail(user.getEmail());
         user1.setPhone(user.getPhone());
-        user1.setRole(user.getRole());
+//        user1.setRole(user.getRole());
 
         userRepositoty.save(user1);
      }

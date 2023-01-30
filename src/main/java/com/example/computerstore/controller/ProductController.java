@@ -6,11 +6,13 @@ import com.example.computerstore.dao.ProductRepository;
 import com.example.computerstore.model.Product;
 import com.example.computerstore.model.User;
 import com.example.computerstore.service.ProductService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,16 +33,25 @@ public class ProductController {
     private ProductRepository productRepository;
 
 
-    @GetMapping("/")
+    @GetMapping({"/", "search"})
     public String AllProduct(
             Model model,
             @RequestParam("page") Optional<Integer> page,
-            @RequestParam("size") Optional<Integer> size) {
-
+            @RequestParam("size") Optional<Integer> size,
+            @RequestParam(name = "search", required = false) String keyWord,
+            HttpSession httpSession) {
+        Page<Product> productsPage = null;
         // pageable
         int currentPage = page.orElse(1);
         int pageSize = size.orElse(8);
-        Page<Product> productsPage = productRepository.getProductsByActiveTrue(PageRequest.of(currentPage - 1, pageSize));
+        if (StringUtils.hasText(keyWord)) {
+            productsPage = productService.getProductByKeyWord(keyWord, PageRequest.of(currentPage - 1, pageSize));
+            if (productsPage.isEmpty()) {
+                model.addAttribute("message", "product is not present !");
+            }
+        } else {
+            productsPage = productRepository.getProductsByActiveTrue(PageRequest.of(currentPage - 1, pageSize));
+        }
         model.addAttribute("productPage", productsPage);
         int totalPages = productsPage.getTotalPages();
         if (totalPages > 0) {
@@ -49,8 +60,10 @@ public class ProductController {
         }
         model.addAttribute("products", productsPage);
 
+        //search
+
         // category
-        model.addAttribute("categorys", categoryRepository.findAll());
+        model.addAttribute("categorys", categoryRepository.findAllByActiveTrue());
 
         // brand
         List<Product> productList = productService.findAll();
@@ -91,16 +104,20 @@ public class ProductController {
         return "product/productDetail";
     }
 
+
     @GetMapping("category")
     public String getProductByCategoryId(Model model,
-                                         @RequestParam("categoryId") int categoryId,
+                                         @RequestParam("categoryName") String categoryName,
                                          @RequestParam("page") Optional<Integer> page,
                                          @RequestParam("size") Optional<Integer> size) {
 
         // pageable
         int currentPage = page.orElse(1);
         int pageSize = size.orElse(8);
-        Page<Product> productsPage = productService.getProductByCategoryId(categoryId, PageRequest.of(currentPage - 1, pageSize));
+        Page<Product> productsPage = productService.getProductByCategoryName(categoryName, PageRequest.of(currentPage - 1, pageSize));
+        if (productsPage.isEmpty()){
+            model.addAttribute("message","product is not present !");
+        }
         model.addAttribute("productPage", productsPage);
         int totalPages = productsPage.getTotalPages();
         if (totalPages > 0) {
@@ -111,7 +128,7 @@ public class ProductController {
 
 
         List<Product> productList = productService.findAll();
-        model.addAttribute("categorys", categoryRepository.findAll());
+        model.addAttribute("categorys", categoryRepository.findAllByActiveTrue());
 
 
         model.addAttribute("pathvariable", "categoryId");
@@ -119,8 +136,6 @@ public class ProductController {
 
         List<String> brandList = productList.stream().map(Product::getBrand).distinct().collect(Collectors.toList());
         model.addAttribute("brands", brandList);
-
-
 
 
         return "home/index";
@@ -146,7 +161,7 @@ public class ProductController {
 
 
         List<Product> productList = productService.findAll();
-        model.addAttribute("categorys", categoryRepository.findAll());
+        model.addAttribute("categorys", categoryRepository.findAllByActiveTrue());
 
 
         List<String> brandList = productList.stream().map(Product::getBrand).distinct().collect(Collectors.toList());
@@ -179,7 +194,7 @@ public class ProductController {
 
 
         // category
-        model.addAttribute("categorys", categoryRepository.findAll());
+        model.addAttribute("categorys", categoryRepository.findAllByActiveTrue());
 
         // brand
         List<Product> productList = productService.findAll();
@@ -211,7 +226,7 @@ public class ProductController {
         List<Product> getMinPrice = productService.getProductPriceMin(min);
         model.addAttribute("products", getMinPrice);
         // category
-        model.addAttribute("categorys", categoryRepository.findAll());
+        model.addAttribute("categorys", categoryRepository.findAllByActiveTrue());
 
         // brand
         List<Product> productList = productService.findAll();
@@ -219,8 +234,6 @@ public class ProductController {
         model.addAttribute("brands", brandList);
 
 
-
         return "home/index";
     }
-    
 }

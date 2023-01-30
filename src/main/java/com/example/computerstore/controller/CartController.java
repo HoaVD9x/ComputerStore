@@ -30,7 +30,7 @@ public class CartController {
 
 
         model.addAttribute("user", new User());
-        model.addAttribute("categorys", categoryRepository.findAll());
+        model.addAttribute("categorys", categoryRepository.findAllByActiveTrue());
         return "product/productCart";
     }
 }

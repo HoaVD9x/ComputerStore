@@ -3,6 +3,7 @@ package com.example.computerstore.model;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 @Entity
 @Table(name = "role")
@@ -15,8 +16,8 @@ public class Role implements Serializable {
 
     private String roleName;
 
-    @OneToMany(mappedBy = "role", cascade = CascadeType.ALL)
-    private List<User> users;
+   @ManyToMany(mappedBy = "roles")
+   private List<User> users =  new ArrayList<>();
 
     public int getRoleId() {
         return roleId;

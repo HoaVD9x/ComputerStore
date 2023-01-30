@@ -11,6 +11,7 @@ import java.util.Optional;
 @Repository
 public interface CategoryRepository extends JpaRepository<Category,Integer> {
 
-     @Override
-     List<Category> findAll();
+    Category getCategoriesByCategoryId(int categoryId);
+
+    List<Category> findAllByActiveTrue();
 }

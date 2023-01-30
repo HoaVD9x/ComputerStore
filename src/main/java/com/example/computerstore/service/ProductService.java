@@ -18,7 +18,7 @@ public interface ProductService {
     void save(ProductPayload productPayload, HttpServletRequest request)throws IOException;
 
 
-    Page<Product> getProductByCategoryId(int categoryId, Pageable pageable);
+    Page<Product> getProductByCategoryName(String categoryName, Pageable pageable);
 
     Page<Product> getProductbyBrand(String brand, Pageable pageable);
 
@@ -33,6 +33,9 @@ public interface ProductService {
     Product saveProduct(Product product);
 
     List<Product> findAllProductByBrand(String brand);
+
+
+    Page<Product> getProductByKeyWord(String keyWord, Pageable pageable);
 
 
 

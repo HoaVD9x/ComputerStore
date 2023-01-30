@@ -16,6 +16,8 @@ public class Category {
     @Column(name = "categoryName")
     private String categoryName;
 
+    private  boolean active = true;
+
 
     @OneToMany(mappedBy = "category",cascade = CascadeType.ALL)
     private Set<Product> products;
@@ -52,5 +54,13 @@ public class Category {
 
     public void setCategoryName(String categoryName) {
         this.categoryName = categoryName;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 }
